@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}HomFlow{% endblock %}</title>
+    <link rel="icon" href="/static/images/logos/favicon.png" type="image/png" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='dist/output.css') }}"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="font-poppins">
+    {% block content %}{% endblock %}
+  </body>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const progressBars = document.querySelectorAll(".progress-bar");
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              console.log("Progress bar in view:", entry.target);
+
+              entry.target.classList.add("w-[80%]");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+
+        { threshold: 0.5 }
+      );
+
+      progressBars.forEach((bar) => observer.observe(bar));
+      // console.log(bar)
+    });
+
+    function toggleform() {
+      const modal = document.getElementById("tvForm");
+      modal.classList.toggle("hidden");
+    }
+
+    function toggleInfo(button) {
+      const card = button.closest(".tv-card");
+      const info = card.querySelector(".tv_info");
+      const icon = button.querySelector("eye-icon");
+
+      info.classList.toggle("hidden");
+
+      if (info.classList.contains("hidden")) {
+        icon.innerHTML = `
+       <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><defs><style>.cls-1{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px}</style></defs><path class="cls-1" d="M4 16c3 0 5 14 20 14s17-14 20-14M24 32v-1M27.87 31.98l.5-1.88M35 29l-1-1M32 31v-2M38 27l-1-1M40 24l-1-1M20.13 31.98l-.5-1.88M13 29l1-1M16 31v-2M10 27l1-1M8 24l1-1M7 18h34"/><path class="cls-1" d="M-564-496h700v700h-700z"/></svg>
+      `;
+      } else {
+        icon.innerHTML = `
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><defs><style>.cls-1{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px}</style></defs><circle class="cls-1" cx="24" cy="24" r="5"/><path class="cls-1" d="M44 24s-7 10-20 10S4 24 4 24s7-10 20-10 20 10 20 10z"/><path class="cls-1" d="M-360-496h700v700h-700z"/></svg>
+      `;
+      }
+    }
+  </script>
+</html>

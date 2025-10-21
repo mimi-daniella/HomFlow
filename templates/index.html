@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+{% import 'progressMacros.html' as macros %}
+{% import 'testimonials.html' as testimonials %}
+{% block content %}
+
+    <!-- Mobile-Friendly Navbar --> 
+    {% include 'navbar.html' %}
+
+    <!-- back to top button -->
+
+
+<!-- hero section -->
+     <div class="cont-1 relative min-h-[calc(100vh+120px)] bg-[url('/static/images/smartTV.jpg')] bg-cover bg-center">
+        <!-- blur overlay -->
+        <div class="absolute inset-0 bg-gray-900/50 backdrop-blur-sm z-index -1"></div>
+
+
+    <div class="flex items-center justify-center pt-20 ">
+    <h1 class="font-poppins text-center text-4xl sm:text-7xl md:text-6xl leading-[1.8em] relative z-10 text-white">Access and control <br> your SmartHome<br><span class="bg-gradient-to-r from-[#6F00FF] via-[#8B00FF] to-[purple] text-transparent bg-clip-text">from anywhere</span>
+    </h1>
+    </div>
+
+    <p class="relative z-20  text-gray-400 items-center justify center light-text text-2xl text-center pt-10">Experience the future of living with <span class="text-secondary">NOVA</span>, your neural home  <br> assistant that thinks, learns and evolves with you.</p>
+
+    <div class="cta-btns flex justify-center items-center flex-wrap space-x-6 pt-5">
+<div class="flex items-center space-x-2 whitespace-nowrap">
+  <a href="#" class="relative z-20 btn p-4 bg-secondary rounded-lg flex items-center space-x-2 hover:bg-secondaryHover transform hover:-translate-y-3 transition duration-300 ease-in-out">
+    <svg data-name="Layer 1" class="w-8 h-6" id="Layer_1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+      <title/>
+      <path d="M24,33a8,8,0,0,0,8-8V9A8,8,0,0,0,16,9V25A8,8,0,0,0,24,33ZM20,9a4,4,0,0,1,8,0V25a4,4,0,0,1-8,0Z"/>
+      <path d="M38,25a2,2,0,0,0-4,0,10,10,0,0,1-20,0,2,2,0,0,0-4,0A14,14,0,0,0,22,38.84V43H21a2,2,0,0,0,0,4h6a2,2,0,0,0,0-4H26V38.84A14,14,0,0,0,38,25Z"/>
+    </svg>
+    <span>Talk to NOVA &rArr;</span>
+  </a>
+</div>
+
+<div class="flex items-center space-x-2 whitespace-nowrap">
+  <a href="#" class="relative z-20 btn p-4 glass-card rounded-lg flex items-center space-x-2 text-white px-10 border-white/30 hover:bg-secondaryHover transform hover:-translate-y-3 transition duration-300 ease-in-out">
+    <?xml version="1.0"?><svg class="w-8 h-6"  height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg"><title/><path d="M112,111V401c0,17.44,17,28.52,31,20.16l247.9-148.37c12.12-7.25,12.12-26.33,0-33.58L143,90.84C129,82.48,112,93.56,112,111Z" style="fill:none;stroke:#fff;stroke-miterlimit:10;stroke-width:32px"/></svg>
+    Neural Demo
+    </a>
+    </div>
+    </div>
+<p class="relative z-20 text-white text-center text-md mt-8 pb-1 pb-5">Try Saying: </p>
+<div class="speech-corner flex justify-center items-center flex-wrap space-x-6 pt-2 rounded-[40px]">
+
+    
+    <div class="glass-card rounded-lg p-6 text-white rounded-lg flex items-center space-x-4">
+        <?xml version="1.0"?><!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'><svg class="w-8 h-8"  id="Layer_1" style="enable-background:new 0 0 64 64;" version="1.1" viewBox="0 0 64 64" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style type="text/css">
+	.st0{fill:#14b8a6;}
+</style><g><g id="Icon-Comment" transform="translate(328.000000, 480.000000)"><path class="st0" d="M-310-425.6h-2.5l1.5-2.1c1.1-1.6,1.9-3.5,2.3-6c-7.1-3.2-10.9-9.2-10.9-17.1     c0-12.1,9.1-19.6,23.8-19.6c14.7,0,23.8,7.5,23.8,19.6c0,12.2-8.9,19.6-23.8,19.6c-0.3,0-0.7,0-1,0     C-299.2-428.6-303.2-425.6-310-425.6L-310-425.6z M-296-467.8c-13.3,0-21.2,6.3-21.2,17c0,9.1,5.6,13.2,10.2,15.1l0.9,0.4l-0.1,1     c-0.3,2.3-0.8,4.3-1.6,6c4.8-0.6,7.6-3,9.1-5l0.4-0.5l0.9,0c0.4,0,0.9,0,1.3,0c19.1,0,21.2-11.9,21.2-17     C-274.8-461.4-282.7-467.8-296-467.8L-296-467.8z" id="Fill-59"/></g></g></svg>
+<span>"NOVA, good morning"</span>
+
+    </div>
+    <div class="glass-card rounded-lg p-6 text-white rounded-lg flex items-center space-x-4">
+        <?xml version="1.0"?><!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'><svg class="w-8 h-8"  id="Layer_1" style="enable-background:new 0 0 64 64;" version="1.1" viewBox="0 0 64 64" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style type="text/css">
+	.st0{fill:#14b8a6;}
+</style><g><g id="Icon-Comment" transform="translate(328.000000, 480.000000)"><path class="st0" d="M-310-425.6h-2.5l1.5-2.1c1.1-1.6,1.9-3.5,2.3-6c-7.1-3.2-10.9-9.2-10.9-17.1     c0-12.1,9.1-19.6,23.8-19.6c14.7,0,23.8,7.5,23.8,19.6c0,12.2-8.9,19.6-23.8,19.6c-0.3,0-0.7,0-1,0     C-299.2-428.6-303.2-425.6-310-425.6L-310-425.6z M-296-467.8c-13.3,0-21.2,6.3-21.2,17c0,9.1,5.6,13.2,10.2,15.1l0.9,0.4l-0.1,1     c-0.3,2.3-0.8,4.3-1.6,6c4.8-0.6,7.6-3,9.1-5l0.4-0.5l0.9,0c0.4,0,0.9,0,1.3,0c19.1,0,21.2-11.9,21.2-17     C-274.8-461.4-282.7-467.8-296-467.8L-296-467.8z" id="Fill-59"/></g></g></svg>
+<span>"Optimize energy usage"</span>
+        
+    </div>
+
+    <div class="glass-card rounded-lg p-6 text-white rounded-lg flex items-center space-x-4">
+        <?xml version="1.0"?><!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'><svg class="w-8 h-8"  id="Layer_1" style="enable-background:new 0 0 64 64;" version="1.1" viewBox="0 0 64 64" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style type="text/css">
+	.st0{fill:#14b8a6;}
+</style><g><g id="Icon-Comment" transform="translate(328.000000, 480.000000)"><path class="st0" d="M-310-425.6h-2.5l1.5-2.1c1.1-1.6,1.9-3.5,2.3-6c-7.1-3.2-10.9-9.2-10.9-17.1     c0-12.1,9.1-19.6,23.8-19.6c14.7,0,23.8,7.5,23.8,19.6c0,12.2-8.9,19.6-23.8,19.6c-0.3,0-0.7,0-1,0     C-299.2-428.6-303.2-425.6-310-425.6L-310-425.6z M-296-467.8c-13.3,0-21.2,6.3-21.2,17c0,9.1,5.6,13.2,10.2,15.1l0.9,0.4l-0.1,1     c-0.3,2.3-0.8,4.3-1.6,6c4.8-0.6,7.6-3,9.1-5l0.4-0.5l0.9,0c0.4,0,0.9,0,1.3,0c19.1,0,21.2-11.9,21.2-17     C-274.8-461.4-282.7-467.8-296-467.8L-296-467.8z" id="Fill-59"/></g></g></svg>
+<span>"Movie night mode"</span>
+        
+    </div>
+</div>
+    </div>
+
+    <!-- Stats Card -->
+    
+    <section class="features-bg grid grid-cols-2 md:grid-cols-4 gap-6 px-4 sm:px-6 md:px-10 lg:px-20 py-16">
+        <div class="section-1 hover:scale-110 transition-transform duration-500 ease-in-out">
+           <div class="gradient-hero relative w-16 h-16 mx-auto rounded-2xl  flex items-center justify-center shadow-xl group-hover:shadow-2xl">
+                            <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-teal-400/20 to-purple-400/20 blur-xl z-0"></div>
+            <?xml version="1.0"?><!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'><svg class="w-10 h-10 "  enable-background="new 0 0 48 48" height="48px" fill="white" version="1.1" viewBox="0 0 48 48" width="48px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="Expanded"><g><g><path d="M42,48H28V35h-8v13H6V27c0-0.552,0.447-1,1-1s1,0.448,1,1v19h10V33h12v13h10V28c0-0.552,0.447-1,1-1s1,0.448,1,1V48z"/></g><g><path d="M47,27c-0.249,0-0.497-0.092-0.691-0.277L24,5.384L1.691,26.723c-0.399,0.381-1.032,0.368-1.414-0.031     c-0.382-0.399-0.367-1.032,0.031-1.414L24,2.616l23.691,22.661c0.398,0.382,0.413,1.015,0.031,1.414     C47.526,26.896,47.264,27,47,27z"/></g><g><path d="M39,15c-0.553,0-1-0.448-1-1V8h-6c-0.553,0-1-0.448-1-1s0.447-1,1-1h8v8C40,14.552,39.553,15,39,15z"/></g></g></g></svg>
+           </div>
+<p class="text-primary text-6xl text-center leading-[1.1] pt-6">
+  5M+</p>
+  <p class="text-white text-sm text-center leading-[1.1] pb-2">Homes Connected</p>
+  <p class="text-gray-400 text-sm text-center leading-[1.1]">Worldwide installations</p>
+        </div>
+        
+        <div class="section-2 hover:scale-110 transition-transform duration-500 ease-in-out">
+           <div class="gradient-hero relative w-16 h-16 mx-auto rounded-2xl  flex items-center justify-center shadow-xl group-hover:shadow-2xl">
+                            <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-teal-400/20 to-purple-400/20 blur-xl z-0"></div>
+ <?xml version="1.0"?><svg class="w-12 h-12" fill="white"  data-name="Layer 1" id="Layer_1" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="M256,99.18A5.14,5.14,0,0,0,261.15,94V40a5.15,5.15,0,1,0-10.3,0V94A5.15,5.15,0,0,0,256,99.18Z"/><path d="M356.27,153.12c-24.63-24.07-62.2-35.68-111.72-34.56a5.14,5.14,0,0,0-5,5.15v10.07H225.58a5.16,5.16,0,0,0-5.13,4.58L217,169.75a104.58,104.58,0,0,0-25.31,10.53l-24.8-19.84a5.16,5.16,0,0,0-6.86.38l-27,27a5.15,5.15,0,0,0-.39,6.86l19.9,24.87a102.12,102.12,0,0,0-10.31,24.94L110.82,248a5.16,5.16,0,0,0-4.58,5.12V291.3a5.16,5.16,0,0,0,4.58,5.13l31.36,3.46a101.51,101.51,0,0,0,10.32,25l-19.9,24.87a5.15,5.15,0,0,0,.39,6.86l27,27a5.15,5.15,0,0,0,6.86.38l24.79-19.82A105.6,105.6,0,0,0,217,374.68l3.49,31.38a5.16,5.16,0,0,0,5.13,4.58h13.94V472a5.14,5.14,0,0,0,5.15,5.15h73.81a5.15,5.15,0,0,0,5.15-5.15V424.64a5.06,5.06,0,0,0-.28-1.65l.09-57.49c0-5.4,2.9-10.42,7.94-13.78,37.45-25,58.92-62.28,58.92-102.31C390.3,207.59,378.85,175.2,356.27,153.12ZM239.52,336.6a64.59,64.59,0,0,1,0-128.78Zm-9.34,63.74-3.05-27.45v-2.27a5.15,5.15,0,0,0-4-5l-.88-.21a95,95,0,0,1-28.33-11.89,5.16,5.16,0,0,0-6,.39L164,373.05l-20.49-20.48L161,330.7l1.79-2.34a5.16,5.16,0,0,0,.3-5.84,92,92,0,0,1-11.71-28.24,5.16,5.16,0,0,0-4-3.9l-3.13-.6-27.73-3.08v-29l28-3.12,2.66-.45a5.15,5.15,0,0,0,4.16-3.93,92.82,92.82,0,0,1,11.73-28.34,5.14,5.14,0,0,0-.31-5.86l-19.27-24.17L164,171.37l21.65,17.31,2.17,1.86a5.17,5.17,0,0,0,6.3.31l.67-.48a95.17,95.17,0,0,1,28.32-11.55,5.15,5.15,0,0,0,4-5l3.05-29.72h9.34v53.39a74.92,74.92,0,0,0,0,149.48v53.39Zm83.15,66.52H249.82V429.8h63.51Zm12.33-123.71c-7.83,5.23-12.51,13.57-12.53,22.34l-.08,54H276.49V305.13l66-51.06a5.15,5.15,0,1,0-6.3-8.15l-68,52.61a5.15,5.15,0,0,0-2,4.07V419.49H249.82V128.79h1.29c43.48,0,76.42,10.65,98,31.71,20.52,20.05,30.93,50,30.93,88.91C380,285.93,360.19,320.1,325.66,343.15Z"/><path d="M130.72,156.46a5.15,5.15,0,0,0,7.3-7.27L99.84,110.93a5.15,5.15,0,1,0-7.29,7.28Z"/><path d="M83.47,267.06h-54a5.15,5.15,0,1,0,0,10.3H83.47a5.15,5.15,0,0,0,0-10.3Z"/><path d="M130.74,382.93l-38.2,38.24a5.15,5.15,0,0,0,7.29,7.28L138,390.22a5.15,5.15,0,0,0-7.28-7.29Z"/><path d="M377.64,158a5.12,5.12,0,0,0,3.64-1.51l38.18-38.25a5.15,5.15,0,0,0-7.3-7.28L374,149.19a5.15,5.15,0,0,0,3.65,8.78Z"/><path d="M482.58,267.06h-54a5.15,5.15,0,0,0,0,10.3h54a5.15,5.15,0,1,0,0-10.3Z"/><path d="M381.26,382.93a5.15,5.15,0,0,0-7.28,7.29l38.2,38.23a5.15,5.15,0,0,0,7.28-7.28Z"/></svg>
+           </div>
+<p class="text-primary text-6xl text-center leading-[1.1] pt-6">
+&infin;</p>
+  <p class="text-white text-sm text-center leading-[1.1] pb-2">AI Learning</p>
+  <p class="text-gray-400 text-sm text-center leading-[1.1]">Continuous evolution</p>
+        </div>
+
+        <div class="section-3 hover:scale-110 transition-transform duration-500 ease-in-out">
+            <div class="gradient-hero relative w-16 h-16 mx-auto rounded-2xl  flex items-center justify-center shadow-xl group-hover:shadow-2xl">
+                                <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-teal-400/20 to-purple-400/20 blur-xl z-0"></div>
+                <?xml version="1.0"?><svg  class="w-10 h-10" height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg"><title/><path d="M463.1,112.37C373.68,96.33,336.71,84.45,256,48,175.29,84.45,138.32,96.33,48.9,112.37,32.7,369.13,240.58,457.79,256,464,271.42,457.79,479.3,369.13,463.1,112.37Z" style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"/></svg>             
+            </div>
+            <p class="text-primary text-6xl text-center leading-[1.1] pt-6">99.99%</p>
+
+            <p class="text-white text-sm text-center leading-[1.1] pb-2">Uptime</p>
+             <p class="text-gray-400 text-sm text-center leading-[1.1]">Quantum reliability</p>
+        </div>
+
+        <div class="section-4 hover:scale-110 transition-transform duration-500 ease-in-out">
+            <div class="gradient-hero relative w-16 h-16 mx-auto rounded-2xl  flex items-center justify-center shadow-xl group-hover:shadow-2xl">   
+                <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-teal-400/20 to-purple-400/20 blur-xl z-0"></div>
+
+                 <?xml version="1.0"?><!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'><svg class="w-8 h-8"  enable-background="new 0 0 512 512" height="512px" id="Layer_1" version="1.1" viewBox="0 0 512 512" width="512px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g><path clip-rule="evenodd" d="M287.977,80.361c0-9.067,7.267-16.323,15.878-16.323   c9.08,0,16.331,7.255,16.331,16.323c0,8.615-7.251,15.87-16.331,15.87C295.243,96.231,287.977,88.976,287.977,80.361   L287.977,80.361z M111.967,303.877v-111.98c0-17.229-14.519-31.732-31.757-31.732c-17.691,0-32.21,14.503-32.21,31.732v111.98   c0,17.683,14.52,32.193,32.21,32.193C97.449,336.07,111.967,321.56,111.967,303.877L111.967,303.877z M384.154,160.165H127.846   v207.646c0,16.776,13.605,30.381,30.389,30.381h1.821v81.615c0,17.682,14.511,32.193,32.203,32.193   c17.246,0,31.757-14.512,31.757-32.193v-81.615h63.96v81.615c0,17.682,14.519,32.193,32.209,32.193   c17.239,0,31.758-14.512,31.758-32.193v-81.615h2.267c16.331,0,29.944-13.604,29.944-30.381V160.165z M400.032,191.897v111.98   c0,17.683,14.519,32.193,32.211,32.193c17.238,0,31.757-14.511,31.757-32.193v-111.98c0-17.229-14.519-31.732-31.757-31.732   C414.551,160.165,400.032,174.668,400.032,191.897L400.032,191.897z M224.016,80.361c0,8.615-7.259,15.87-15.879,15.87   c-9.072,0-15.878-7.255-15.878-15.87c0-9.067,6.806-16.323,15.878-16.323C216.757,64.039,224.016,71.294,224.016,80.361   L224.016,80.361z M127.846,144.295h256.308c0-42.62-20.864-80.709-53.075-103.827l26.756-26.757c3.188-3.171,3.188-8.162,0-11.333   c-3.173-3.171-8.157-3.171-11.33,0l-29.491,29.476c-18.145-9.981-39.009-15.87-60.795-15.87c-22.224,0-43.087,5.889-61.232,15.87   L165.495,2.378c-2.719-3.171-8.166-3.171-10.885,0c-3.172,3.171-3.172,8.162,0,11.333l26.311,26.757   C149.163,63.586,127.846,101.675,127.846,144.295L127.846,144.295z" fill="#fff" fill-rule="evenodd"/></g></svg>
+            </div>
+                        <p class="text-primary text-6xl text-center leading-[1.1] pt-6">24/7</p>
+  <p class="text-white text-sm text-center leading-[1.1] pb-2">NOVA Support</p>
+  <p class="text-gray-400 text-sm text-center leading-[1.1]">Always active</p>
+        </div>
+        </div>
+    </section>
+
+    <!-- neural technology-->
+     <section class="h-[300px]"> 
+        <div class="flex flex-row items-center justify-center">
+            <div class="gap-2 text-center rounded-full flex mt-10 p-2 border-dashed border-secondary border-2 items-center">
+            <?xml version=" 1.0"?><svg fill="none" height="48" viewBox="0 0 48 48" width="48" xmlns="http://www.w3.org/2000/svg"><rect fill="white" fill-opacity="0.01" height="48" width="48"/><path clip-rule="evenodd" d="M20.5 33.0001C22.466 33.0001 23.2904 29.4621 25 28.7532C26.7723 28.0183 29.4174 30.0888 30.753 28.7532C32.0887 27.4176 30.4474 24.4513 31.1823 22.679C31.8912 20.9694 35 20.4661 35 18.5001C35 16.5342 31.462 16.0592 30.753 14.3496C30.0181 12.5774 32.0887 9.5827 30.753 8.24709C29.4174 6.91147 26.2656 8.98199 24.4933 8.24709C22.7837 7.53818 22.466 4.00014 20.5 4.00014C18.534 4.00014 18.0041 7.96476 16.2945 8.67366C14.5222 9.40856 11.5826 6.91147 10.247 8.24709C8.91134 9.5827 10.9819 12.2278 10.247 14.0001C9.53805 15.7097 6 16.5342 6 18.5001C6 20.4661 9.53805 20.9694 10.247 22.679C10.9819 24.4513 8.91134 27.4176 10.247 28.7532C11.5826 30.0888 14.5222 28.0183 16.2945 28.7532C18.0041 29.4621 18.534 33.0001 20.5 33.0001Z" fill="purple" fill-rule="evenodd" stroke="black" stroke-linejoin="round" stroke-width="4"/><path d="M20 22.0001C22.2091 22.0001 24 20.2093 24 18.0001C24 15.791 22.2091 14.0001 20 14.0001C17.7909 14.0001 16 15.791 16 18.0001C16 20.2093 17.7909 22.0001 20 22.0001Z" fill="#1ABC" stroke="white" stroke-linejoin="round" stroke-width="4"/><path d="M16.5692 30.0001C15.3611 36.7991 16.0762 41.0544 18.7144 42.7661C22.6719 45.3338 25.4482 43.327 26.8968 41.8553C28.3454 40.3837 33.0495 33.944 37.0763 33.944C41.1031 33.944 42.315 37.8243 41.9334 39.944C41.679 41.3571 41.022 42.4024 39.9624 43.0798" stroke="white" stroke-linecap="round" stroke-width="2"/></svg>
+            <p class="text-white text-center text-md">Neural Technology</p>
+            </div>
+        </div>
+
+        <p class="text-primary text-6xl text-center leading-[1.1] pt-6">Secure your space wherever you are</p>
+
+        <p class="text-gray-400 text-lg text-center leading-[1.1] pt-4">Experience the next evolution of home intelligence with NOVA's neural network.</p>
+
+    </section>
+
+    {% include 'cardsSection.html' %}
+
+
+<!-- Testimonial -->
+    <section class="testimonials-section text-center mt-40">
+        <h3 class="text-6xl text-white mb-[30px]">Voices of the Future</h3>
+        <p class="light-text text-gray-400 text-2xl">See what pioneering families are saying about life with NOVA</p>
+
+
+        <div class="flex justify-between mx-10  mt-10">
+            {{ 
+                testimonials.testimonial_card(
+                    'images/james.jpeg',
+                    'Dr James Bernard',
+                    'Tech Executive',
+                    "NOVA completely transformed our home. It's like living in the future - everything just anticipates what we need.",
+                    '5.0',
+                    'border-blue-500'
+                ) }}
+
+            {{ 
+                testimonials.testimonial_card(
+                'images/sarah.jpeg',
+                'Daniella Alagwu',
+                'Smart Home Enthusiast',
+                "The neural energy optimization alone saved us up to 40% on electricity. NOVA is pure genius.",
+                '4.0',
+                'border-pink-500'
+            )}}
+
+            {{
+                testimonials.testimonial_card(
+                    'images/david.jpeg',
+                    'David Francis',
+                    'Interior Designer',
+                    "HomFlow doesn't just control devices - it creates experiences. My clients are absolutely amazed.",
+                    '5.0',
+                    'border-yellow-500'
+                )
+            }}
+            </div>
+        </section>
+
+        <!-- Awaits -->
+         <section class="mt-20 place-items-center justify-center">
+         <p class="glass-card p-4 text-white text-lg rounded-full animate-float ">
+            NOVA is waiting to meet you</p>
+         <h4 class="bg-gradient-to-r from-[#6F00FF] via-[#8B00FF] to-[purple] text-transparent bg-clip-text text-6xl mt-10 text-center">Your Future Home Awaits</h4>
+         <p class="text-gray-400 light-text text-2xl text-center leading-[1.6] mt-10">Join the neural revolution. Experience what it means to live in <br>
+        harmony with intelligent technology.</p>
+        <div class="flex items-center justify-between w-[400px] mb-10 mt-4">
+            <a href="#" class="gradient-hero p-4  rounded-lg hover:bg-secondaryHover transform hover:-translate-y-1  transition duration-300 ease-in-out" type="button">Begin Neural Journey</a>
+            <a href="#" class="glass-card p-4 px-10 rounded-lg text-white hover:bg-secondaryHover transform hover:-translate-y-1  transition duration-300 ease-in-out">Neural Demo</a>
+        </div>
+        </section>
+
+        {% include 'newsLetter.html' %}
+
+{% endblock %}

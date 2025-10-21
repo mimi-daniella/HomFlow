@@ -1,0 +1,14 @@
+{% macro progress_bar(position_class, color_class) %}
+<div class="glass-card rounded-lg px-3 py-2 w-full max-w-md {{ position_class }}">
+  <div class="flex items-center justify-between pb-3">
+    <p class="text-white text-sm sm:text-base">NOVA Status</p>
+    <p class="text-secondary light-text text-sm sm:text-base">Active</p>
+  </div>
+
+  <div class="w-full h-2 bg-gray-300 rounded-full overflow-hidden">
+    <div
+      class="progress-bar h-2 rounded-full w-0 transition-all duration-[2s] ease-in-out bg-{{ color_class }}">
+    </div>
+  </div>
+</div>
+{% endmacro %}

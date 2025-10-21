@@ -1,0 +1,25 @@
+{% macro testimonial_card(image, name, role, feedback, rating, border_color) %}
+<div class="bg-pink-100 w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-sm p-4 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg transform hover:scale-105 border-2 border-{{ 'blue-500' if border_color == 'blue' else border_color }} hover:shadow-[0_0_10px_#f56565]">
+  <div class="flex items-center mb-4">
+    <img class="w-12 h-12 sm:w-14 sm:h-14 rounded-full mr-4 object-cover" src="{{ url_for('static', filename=image) }}" alt="Customer image">
+    <div>
+      <h4 class="text-base sm:text-lg font-semibold text-black">{{ name }}</h4>
+      <p class="text-gray-500 dark:text-gray-400 light-text text-sm sm:text-base">{{ role }}</p>
+    </div>
+  </div>
+  <p class="text-black text-sm sm:text-base leading-relaxed">
+    {{ feedback }}
+  </p>
+  <div class="mt-4 sm:mt-6">
+    <div class="flex items-center flex-wrap gap-1">
+      {% for _ in range(5) %}
+      <svg aria-hidden="true" class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <title>Star</title>
+        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+      </svg>
+      {% endfor %}
+      <span class="text-black ml-2 text-sm sm:text-base">{{ rating }}</span>
+    </div>
+  </div>
+</div>
+{% endmacro %}

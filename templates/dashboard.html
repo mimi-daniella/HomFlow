@@ -1,0 +1,247 @@
+{% extends "base.html" %} {% block title %}HomFlow - Smart TV Dashboard{%
+endblock %} {% block content %}
+
+<!-- Header -->
+<header
+  class="flex justify-between items-center p-6 bg-black border-b border-gray-800"
+>
+  <img src={{url_for('static', filename='images/logos/favicon.png')}} alt="Logo"
+  class="h-[50px] w-[50px] cursor-pointer">
+
+  <p class="text-white text-2xl font-bold hidden sm:block">User Dashboard</p>
+
+  <div class="flex items-center justify-between space-x-2">
+    <p class="text-white">{{ user.username }}</p>
+    <svg
+      width="64px"
+      height="64px"
+      viewBox="-4.08 -4.08 32.16 32.16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      stroke="#ffffff"
+      transform="matrix(1, 0, 0, 1, 0, 0)"
+    >
+      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g
+        id="SVGRepo_tracerCarrier"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      ></g>
+      <g id="SVGRepo_iconCarrier">
+        <circle
+          cx="12"
+          cy="9"
+          r="3"
+          stroke="#ffffff"
+          stroke-width="1.152"
+        ></circle>
+        <path
+          d="M17.9691 20C17.81 17.1085 16.9247 15 11.9999 15C7.07521 15 6.18991 17.1085 6.03076 20"
+          stroke="#ffffff"
+          stroke-width="1.152"
+          stroke-linecap="round"
+        ></path>
+        <path
+          d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7"
+          stroke="#ffffff"
+          stroke-width="1.152"
+          stroke-linecap="round"
+        ></path>
+      </g>
+    </svg>
+  </div>
+</header>
+
+<!-- Add TV Section -->
+<section class="flex justify-between items-center ">
+  <h2 class="text-2xl font-semibold text-blue-400 ">My Smart TVs</h2>
+  <button
+    class="text-white hover:text-gray-200 light-text border border-blue-400 rounded-md py-2 px-4"
+    id="tv-button"
+    onclick="toggleform()"
+  >
+    + Add a device
+  </button>
+</section>
+
+<!-- form -->
+<div
+  class="bg-white max-w-xl mx-auto text-black shadow-md rounded-lg p-6 animate-fadeIn hidden mt-10 relative"
+  id="tvForm"
+>
+  <h2 class="text-2xl font-bold mb-4 text-black px-10">Add TV to Smart Home</h2>
+  <button
+    onclick="toggleform()"
+    class="text-black hover:text-gray-700 text-4xl light-text absolute top-4 right-4"
+  >
+    &times;
+  </button>
+
+  <form class="space-y-4" method="POST" action="{{url_for('add_tv')}}">
+    <!-- TV Label -->
+    <div>
+      <label class="block text-sm font-medium text-black">TV Label</label>
+      <input
+        type="text"
+        name="tv_label"
+        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+        placeholder="e.g., Living Room TV"
+        required
+      />
+    </div>
+
+    <!-- TV Brand -->
+    <div>
+      <label class="block text-sm font-medium text-black">TV Brand</label>
+      <input
+        type="text"
+        name="brand"
+        class="mt-1 block w-full border-gray-00 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+        required
+      />
+    </div>
+
+    <!-- Model Number -->
+    <div>
+      <label class="block text-sm font-medium text-black">Model Number</label>
+      <input
+        type="text"
+        name="model"
+        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+        required
+      />
+    </div>
+
+    <!-- Smart Home Platform -->
+    <div>
+      <label class="block text-sm font-medium text-black"
+        >Smart Home Platform</label
+      >
+      <select
+        name="platform"
+        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+        required
+      >
+        <option value="">Select one</option>
+        <option value="Alexa">Amazon Alexa</option>
+        <option value="Google">Google Home</option>
+        <option value="SmartThings">Samsung SmartThings</option>
+        <option value="HomeKit">Apple HomeKit</option>
+      </select>
+    </div>
+
+    <!-- Control Method -->
+    <div>
+      <label class="block text-sm font-medium text-black">Control Method</label>
+      <select
+        name="control_method"
+        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+        required
+      >
+        <option value="">Select one</option>
+        <option value="Wi-Fi">Wi-Fi</option>
+        <option value="Bluetooth">Bluetooth</option>
+        <option value="IR">IR Blaster</option>
+        <option value="HDMI-CEC">HDMI-CEC</option>
+      </select>
+    </div>
+
+    <!-- IP Address -->
+    <div>
+      <label class="block text-sm font-medium text-black">TV IP Address</label>
+      <input
+        type="text"
+        name="ip_address"
+        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+      />
+    </div>
+
+    <!-- Submit Button -->
+    <div>
+      <button
+        type="submit"
+        class="w-full bg-indigo-600 text-black py-2 px-4 rounded-md hover:bg-indigo-700"
+      >
+        Add TV
+      </button>
+    </div>
+    <p class="light-text text-sm text-center">
+      Information about your SmartTV can be found on the TV's settings, manual,
+      or on the body of the device. <br />
+      You can contact your suppliers or manufacturers for more information.
+      <br />
+      <span class="text-red-500"
+        >Note: Information provided here is not shared.</span
+      >
+    </p>
+  </form>
+</div>
+
+
+
+
+
+
+<!-- card -->
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
+  {% for tv in tvs %}
+  <div class="tv-card bg-white shadow-md rounded-lg p-6">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-xl font-bold text-teal-400">
+        {{ tv.tv_label }}
+      </h3>
+      <button class="text-gray-500 text-2xl hover:text-gray-700">⋯</button>
+    </div>
+
+    <div class="space-y-4">
+      <button class="tv-button w-full bg-blue-600 hover:bg-blue-500">
+      Power Toggle
+      </button>
+      <div class="flex justify-between">
+        <button class="tv-button bg-gray-700 hover:bg-gray-600">Vol -</button>
+        <button class="tv-button bg-gray-700 hover:bg-gray-600">Vol +</button>
+      </div>
+      <div class="flex justify-between">
+        <button class="tv-button bg-gray-700 hover:bg-gray-600">Ch -</button>
+        <button class="tv-button bg-gray-700 hover:bg-gray-600">Ch +</button>
+      </div>
+    </div>
+
+    <div class="mt-6 flex justify-between">
+      <button class="tv-button bg-pink-600 hover:bg-pink-500 flex-1 mr-2">
+        🎵 Music Player
+      </button>
+      <button class="tv-button bg-teal-500 hover:bg-teal-400 flex-1 ml-2">
+        🎮 Remote
+      </button>
+    </div>
+
+    <!-- Optional: Show platform and control method -->
+     <div class="mt-6 flex items-center justify-between">
+    <div class="tv_info mt-4 text-sm text-gray-600 hidden">
+      {{ tv.brand }} {{ tv.model }} <br>
+      Platform: {{ tv.platform }}<br />
+      Control: {{ tv.control_method }}<br />
+      IP: {{ tv.ip_address }}
+    </div>
+
+    <!-- eye -->
+     <!-- Toggle Button -->
+<button onclick="toggleInfo(this)" class="text-gray-500 hover:text-gray-700">
+  <!-- Eye Open SVG -->
+<svg class="eye-icon w-6 h-6" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><defs><style>.cls-1{fill:none;stroke:white;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px}</style></defs><path class="cls-1" d="M4 16c3 0 5 14 20 14s17-14 20-14M24 32v-1M27.87 31.98l.5-1.88M35 29l-1-1M32 31v-2M38 27l-1-1M40 24l-1-1M20.13 31.98l-.5-1.88M13 29l1-1M16 31v-2M10 27l1-1M8 24l1-1M7 18h34"/><path class="cls-1" d="M-564-496h700v700h-700z"/></svg>
+  </svg>
+</button>
+
+ <form action="{{ url_for('delete_tv', tv_id=tv.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this TV?');">
+  <button type="submit">
+       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-10 h-10"><path d="M5.755 20.283 4 8h16l-1.755 12.283A2 2 0 0 1 16.265 22h-8.53a2 2 0 0 1-1.98-1.717zM21 4h-5V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v1H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2z" stroke="white" fill="white"/></svg>
+  </button>
+ </form>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}
