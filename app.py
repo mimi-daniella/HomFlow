@@ -73,11 +73,10 @@ class Validation:
 class SmartTvs(db.Model):
         id = db.Column(db.Integer, primary_key = True)
         tv_label = db.Column(db.String(50), nullable = False)
-        brand = db.Column(db.String(50), nullable = False)
-        model = db.Column(db.String(50), nullable = False)
+        mac_address = db.Column(db.String(50), nullable = False)
+        ip_address = db.Column(db.String(50))
         platform = db.Column(db.String(50), nullable = False)
         control_method = db.Column(db.String(50), nullable = False)
-        ip_address = db.Column(db.String(50))
         user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
         # relationship
         user = db.relationship('User', backref = db.backref('smart_tvs', lazy = True))
@@ -148,11 +147,10 @@ def authorize():
 def add_tv():
     tv = SmartTvs(
         tv_label = request.form['tv_label'], 
-        brand = request.form['brand'],
-        model = request.form['model'],
+        mac_address = request.form['mac_address'],
+        ip_address = request.form['ip_address'],
         platform = request.form['platform'],
         control_method = request.form['control_method'],
-        ip_address = request.form['ip_address'],
         user_id = session.get('user_id')
     )
     db.session.add(tv)
