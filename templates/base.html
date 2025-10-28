@@ -9,14 +9,16 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='dist/output.css') }}"
     />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}" />
+
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
       rel="stylesheet"
     />
   </head>
-  <body class="font-poppins">
+ 
     {% block content %}{% endblock %}
-  </body>
+  
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -64,5 +66,16 @@
       }
     }
 
+<<<<<<< HEAD
+=======
+
+    function toggleTvCard(){
+     const button =  document.querySelector(".add-button");
+     const card = document.querySelector(".tv-card");
+     button.addEventListener("click", () => {
+      card.classList.add("hidden");
+     })
+    }
+>>>>>>> main
   </script>
 </html>

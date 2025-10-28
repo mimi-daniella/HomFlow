@@ -1,15 +1,56 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
+import requests
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import re #for regex validation
-from api_key import CLIENT_ID, CLIENT_SECRET, SECRET_KEY
+from api_key import CLIENT_ID, CLIENT_SECRET, SECRET_KEY, SMART_THINGS_API_TOKEN
 from authlib.integrations.flask_client import OAuth
+import asyncio
+from samsung import SamsungController
+from hisense import HisenseController
+import time
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///homflow.db"
 db = SQLAlchemy(app)
 app.config['SECRET_KEY'] = SECRET_KEY
 oauth = OAuth(app)
+
+# Samsung websocket
+# async def main_application_logic():
+#     print ("Starting Samsung app...")
+#     # initialize the class
+#     controller = SamsungController()
+#     # testing connection
+#     connected = await controller.connect()
+#     if connected:
+#         print("Sending sequence of commands to TV...")
+#         await controller.volume_up()
+#         await controller.sleep(2)
+#         await controller.volume_down()
+#     else:
+#         print("Cannot proceed with the application. Please check your connection to the TV.")
+
+
+
+# Hisense mqtt
+def main_application_logicII():
+    print("Starting Hisense app...")
+    controller = HisenseController()
+
+    controller.connect() 
+    controller.authorize_tv()
+    print("Manual authorization complete")
+
+    try:
+        print("Sending sequence of commands...")
+        controller.send_power_toggle()
+        time.sleep(2)
+        controller.set_source_hdmi1()
+    except Exception as e:
+        print(f"An error occurred during command execution: {e}")
+
+
 
 google = oauth.register(
     name= "google",
@@ -20,7 +61,7 @@ google = oauth.register(
     client_kwargs = {'scope': 'openid email profile'}
 )
 
-
+# user model
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(100), unique=True, nullable= False)
@@ -69,12 +110,11 @@ class Validation:
         return not self.errors
     
 
-
+# smart tv model
 class SmartTvs(db.Model):
         id = db.Column(db.Integer, primary_key = True)
         tv_label = db.Column(db.String(50), nullable = False)
         mac_address = db.Column(db.String(50), nullable = False)
-        ip_address = db.Column(db.String(50))
         platform = db.Column(db.String(50), nullable = False)
         control_method = db.Column(db.String(50), nullable = False)
         user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
@@ -148,7 +188,6 @@ def add_tv():
     tv = SmartTvs(
         tv_label = request.form['tv_label'], 
         mac_address = request.form['mac_address'],
-        ip_address = request.form['ip_address'],
         platform = request.form['platform'],
         control_method = request.form['control_method'],
         user_id = session.get('user_id')
@@ -184,9 +223,12 @@ def delete_tv(tv_id):
 
 
 
+
 if __name__ == "__main__":
     with app.app_context():  
         # db.drop_all()  
         db.create_all()
-    app.run( host='localhost', port=5000, debug = True)
+    # asyncio.run(main_application_logic())
+    main_application_logicII()
+    app.run( host='localhost', port=5000, debug = False)
 
