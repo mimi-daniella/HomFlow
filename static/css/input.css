@@ -80,13 +80,7 @@ body{
 }
 
 
-/* dashboard */
-    .glow {
-      box-shadow: 0 0 20px rgba(20, 184, 166, 0.6);
-    }
-    .tv-card {
-      @apply bg-gray-900 rounded-2xl p-6 shadow-xl border border-gray-700;
-    }
-    .tv-button {
-      @apply px-6 py-3 rounded-xl font-semibold transition transform hover:scale-105;
-    }
+ .flash.error { background-color: #f8d7da; color: #721c24; padding: 10px; margin: 10px 0; border-radius: 5px; }
+
+.flash.success { background-color: #d4edda; color: #155724; padding: 10px; margin: 10px 0; border-radius: 5px; }
+

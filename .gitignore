@@ -12,6 +12,7 @@ env/
 node_modules/
 api_key.py
 static/images/
+samsung_tv_token.txt
 # Byte-compiled / optimized / DLL files
 # Compiled Python files and other generated artifacts.
 __pycache__/

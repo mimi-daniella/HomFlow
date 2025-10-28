@@ -9,14 +9,16 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='dist/output.css') }}"
     />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}" />
+
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
       rel="stylesheet"
     />
   </head>
-  <body class="font-poppins">
+ 
     {% block content %}{% endblock %}
-  </body>
+  
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -62,6 +64,15 @@
 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><defs><style>.cls-1{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px}</style></defs><circle class="cls-1" cx="24" cy="24" r="5"/><path class="cls-1" d="M44 24s-7 10-20 10S4 24 4 24s7-10 20-10 20 10 20 10z"/><path class="cls-1" d="M-360-496h700v700h-700z"/></svg>
       `;
       }
+    }
+
+
+    function toggleTvCard(){
+     const button =  document.querySelector(".add-button");
+     const card = document.querySelector(".tv-card");
+     button.addEventListener("click", () => {
+      card.classList.add("hidden");
+     })
     }
   </script>
 </html>
