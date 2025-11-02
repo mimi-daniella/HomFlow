@@ -8,7 +8,9 @@ from authlib.integrations.flask_client import OAuth
 import asyncio
 from samsung import SamsungController
 from hisense import HisenseController
+# from hisensetv import HisenseTV
 import time
+# import os
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///homflow.db"
@@ -17,39 +19,39 @@ app.config['SECRET_KEY'] = SECRET_KEY
 oauth = OAuth(app)
 
 # Samsung websocket
-# async def main_application_logic():
-#     print ("Starting Samsung app...")
-#     # initialize the class
-#     controller = SamsungController()
-#     # testing connection
-#     connected = await controller.connect()
-#     if connected:
-#         print("Sending sequence of commands to TV...")
-#         await controller.volume_up()
-#         await controller.sleep(2)
-#         await controller.volume_down()
-#     else:
-#         print("Cannot proceed with the application. Please check your connection to the TV.")
+async def main_application_logic():
+    print ("Starting Samsung app...")
+
+    user_id = session.get('user_id')
+    tv_ip = get_tv_ip(user_id)
+
+    if not tv_ip:
+        flash("No TV found. Please add a TV to your account.", "error")
+        return
+
+    # initialize the class
+    controller = SamsungController(host=tv_ip)
+    # testing connection
+    connected = await controller.connect()
+    if connected:
+        print("Sending commands to tv for testing connection...")
+        await controller.volume_up()
+        await controller.volume_down()
+    else:
+        print("Cannot proceed with the application. Please check your connection to the TV.")
+
+
+
+
 
 
 
 # Hisense mqtt
-def main_application_logicII():
-    print("Starting Hisense app...")
-    controller = HisenseController()
+# def main_application_logicII():
+#     controller = HisenseController(host="172.20.10.2")
 
-    controller.connect() 
-    controller.authorize_tv()
-    print("Manual authorization complete")
-
-    try:
-        print("Sending sequence of commands...")
-        controller.send_power_toggle()
-        time.sleep(2)
-        controller.set_source_hdmi1()
-    except Exception as e:
-        print(f"An error occurred during command execution: {e}")
-
+#     controller.send_power_toggle()
+#     controller.set_source_hdmi1()
 
 
 google = oauth.register(
@@ -114,13 +116,20 @@ class Validation:
 class SmartTvs(db.Model):
         id = db.Column(db.Integer, primary_key = True)
         tv_label = db.Column(db.String(50), nullable = False)
-        mac_address = db.Column(db.String(50), nullable = False)
+        ip_address = db.Column(db.String(50), nullable = False)
         platform = db.Column(db.String(50), nullable = False)
         control_method = db.Column(db.String(50), nullable = False)
         user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
         # relationship
         user = db.relationship('User', backref = db.backref('smart_tvs', lazy = True))
 
+
+def get_tv_ip(user_id, label = None):
+    if label:
+        tv = SmartTvs.query.filter_by(user_id=user_id, tv_label=label).first()
+    else:
+        tv = SmartTvs.query.filter_by(user_id=user_id).first()
+    return tv.ip_address if tv else None
 
 
 # routes
@@ -151,8 +160,8 @@ def register():
     new_user.set_password(request.form['password'])
     db.session.add(new_user)
     db.session.commit()
-    flash("Your acccount has been successfully created. You can now access HomFlow's dashboard.")
-    print(f"New user created: {new_user.email}")
+    flash("Your acccount has been successfully created. You can now access HomFlow's dashboard.", "success")
+    # print(f"New user created: {new_user.email}")
     session['user_id'] = new_user.id
     return redirect(url_for("dashboard"))
 
@@ -187,14 +196,15 @@ def authorize():
 def add_tv():
     tv = SmartTvs(
         tv_label = request.form['tv_label'], 
-        mac_address = request.form['mac_address'],
+        ip_address = request.form['ip_address'],
         platform = request.form['platform'],
         control_method = request.form['control_method'],
         user_id = session.get('user_id')
     )
     db.session.add(tv)
     db.session.commit()
-    flash("TV added successfully!")
+    print (f"ip save{SmartTvs.ip_address}")
+    flash("TV added successfully!", "success")
     return redirect(url_for('dashboard'))
 
 @app.route("/dashboard")
@@ -211,17 +221,43 @@ def dashboard():
 def delete_tv(tv_id):
     tv = SmartTvs.query.get_or_404(tv_id)
     if tv.user_id != session.get('user_id'):
-        flash("Unauthorized action.")
+        flash("Unauthorized action.", "error")
         return redirect(url_for("dashboard"))
     
     db.session.delete(tv)
     db.session.commit()
-    flash("TV deleted successfully.")
+    flash("TV deleted successfully.", "success")
     return redirect(url_for("dashboard"))
 
+# tv brand routing controls
+@app.route("/connect-samsung-tv", methods=['POST'])
+def connect_samsung():
+    asyncio.run(main_application_logic())
+    return True
 
+@app.route('/power-toggle', methods=['POST'])
+def power_toggle():
+    user_id = session.get('user_id')
+    tv_ip = get_tv_ip(user_id)
+    controller = SamsungController(host=tv_ip)
+    asyncio.run(controller.power_toggle())
+    return True
 
+@app.route('/volume-up', methods=['POST'])
+def volume_up():
+    user_id = session.get('user_id')
+    tv_ip = get_tv_ip(user_id)
+    controller = SamsungController(host=tv_ip)
+    asyncio.run(controller.volume_up())
+    return True
 
+@app.route("/volume-down", methods=['POST'])
+def volume_down():
+    user_id = session.get('user_id')
+    tv_ip = get_tv_ip(user_id)
+    controller = SamsungController(host=tv_ip)
+    asyncio.run(controller.volume_down())
+    return True
 
 
 if __name__ == "__main__":
@@ -229,6 +265,7 @@ if __name__ == "__main__":
         # db.drop_all()  
         db.create_all()
     # asyncio.run(main_application_logic())
-    main_application_logicII()
-    app.run( host='localhost', port=5000, debug = False)
+    app.run( host='localhost', port=5000, debug = True)
 
+
+ 

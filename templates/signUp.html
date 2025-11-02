@@ -2,20 +2,6 @@
 block content %}
 
 <!-- https://play.tailwindcss.com/MIwj5Sp9pw -->
-<<<<<<< HEAD
-<div class="py-4">
-  <div
-    class="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl"
-  >
-<div
-  class="hidden lg:block lg:w-1/2 bg-cover"
-  style='background-image: url("{{ url_for("static", filename="images/signUp.jpeg") }}");'
-></div>
-    <div class="w-full p-8 lg:w-1/2">
-      <img src={{url_for('static', filename='images/logos/logoanim.gif')}}
-      alt="logo" class="w-10 h-10 mx-auto mb-6">
-      <p class="text-xl text-gray-600 text-center">Sign Up!</p>
-=======
 <body class="font-poppins bg-black">
   <!-- flash -->
    {% with messages = get_flashed_messages(with_categories=true) %}
@@ -42,7 +28,6 @@ block content %}
         <img src={{url_for('static', filename='images/logos/logoanim.gif')}}
         alt="logo" class="w-10 h-10 mx-auto mb-6">
         <p class="text-xl text-gray-600 text-center">Sign Up!</p>
->>>>>>> main
 
         <a
           href="{{ url_for('login') }}"
