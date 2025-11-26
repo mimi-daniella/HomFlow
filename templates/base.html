@@ -9,18 +9,28 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='dist/output.css') }}"
     />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/custom.css') }}"
+    />
 
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
       rel="stylesheet"
     />
   </head>
- 
-    {% block content %}{% endblock %}
-  
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css"
+  />
 
-  <script>
+  {% block content %}{% endblock %}
+
+  <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+
+  <!-- <script src="/HomFlow/static/js/notyf.js"></script> -->
+
+  <script>  
     document.addEventListener("DOMContentLoaded", () => {
       const progressBars = document.querySelectorAll(".progress-bar");
 
@@ -66,13 +76,12 @@
       }
     }
 
-
-    function toggleTvCard(){
-     const button =  document.querySelector(".add-button");
-     const card = document.querySelector(".tv-card");
-     button.addEventListener("click", () => {
-      card.classList.add("hidden");
-     })
+    function toggleTvCard() {
+      const button = document.querySelector(".add-button");
+      const card = document.querySelector(".tv-card");
+      button.addEventListener("click", () => {
+        card.classList.add("hidden");
+      });
     }
   </script>
 </html>

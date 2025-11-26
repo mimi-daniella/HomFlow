@@ -2,297 +2,380 @@
 endblock %} {% block content %}
 
 <!-- Header -->
- <body class="font-poppins bg-[#000000] px-6">
-  
-      {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <div class="fixed top-4 right-4 z-50 space-y-2 text-white">
-          {% for category, message in messages %}
-            <div class="px-4 py-3 rounded shadow-lg transition-opacity duration-300 text-white
-              {% if category == 'success' %} bg-green-100 text-green-700 {% endif %}
-              {% if category == 'error' %} bg-red-100 text-red-700 {% endif %}
-              {% if category == 'warning' %} bg-yellow-100 text-yellow-700 {% endif %}
-              {% if category not in ['success', 'error', 'warning'] %} bg-grey-100 text-grey-700 {% endif %}
-            ">{{ message }}</div>
-            {% endfor %}
+<body class="font-poppins overflow-x-hidden px-6">
+  <div class="blob"></div>
+  <div class="blob"></div>
+
+
+
+  <header
+    class="flex justify-between items-center p-6 header border-b border-gray-800"
+  >
+    <img src={{url_for('static', filename='images/logos/favicon.png')}}
+    alt="Logo" class="h-[50px] w-[50px] cursor-pointer">
+
+    <p class="text-white text-2xl font-bold hidden sm:block">User Dashboard</p>
+
+    <div class="flex items-center justify-between space-x-2">
+      <p class="text-white">{{ user.username }}</p>
+      <svg
+        width="64px"
+        height="64px"
+        viewBox="-4.08 -4.08 32.16 32.16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        stroke="#ffffff"
+        transform="matrix(1, 0, 0, 1, 0, 0)"
+      >
+        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+        <g
+          id="SVGRepo_tracerCarrier"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        ></g>
+        <g id="SVGRepo_iconCarrier">
+          <circle
+            cx="12"
+            cy="9"
+            r="3"
+            stroke="#ffffff"
+            stroke-width="1.152"
+          ></circle>
+          <path
+            d="M17.9691 20C17.81 17.1085 16.9247 15 11.9999 15C7.07521 15 6.18991 17.1085 6.03076 20"
+            stroke="#ffffff"
+            stroke-width="1.152"
+            stroke-linecap="round"
+          ></path>
+          <path
+            d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7"
+            stroke="#ffffff"
+            stroke-width="1.152"
+            stroke-linecap="round"
+          ></path>
+        </g>
+      </svg>
+    </div>
+  </header>
+
+  <!-- Add TV Section -->
+  <div
+    id="background-area"
+    class="bg-cover bg-center h-screen w-screen"
+    style="
+      background-image: url('https://loading.io/assets/img/bg/gradient/gradient-bg-3.svg');
+    "
+  >
+    <section class="flex justify-between items-center px-6 mb-6">
+      <h2 class="text-2xl font-semibold text-blue-400">My Smart TVs</h2>
+      <button
+        class="text-white hover:text-gray-200 light-text border border-blue-400 rounded-md py-2 px-4 add-button"
+        onclick="toggleform()"
+      >
+        + Add a device
+      </button>
+    </section>
+
+    <!-- form -->
+    <div
+      class="bg-white max-w-xl mx-auto text-black shadow-md rounded-lg p-6 animate-fadeIn hidden mt-10 relative"
+      id="tvForm"
+    >
+      <h2 class="text-2xl font-bold mb-4 text-black px-10">
+        Add TV to Smart Home
+      </h2>
+      <button
+        onclick="toggleform()"
+        class="text-black hover:text-gray-700 text-4xl light-text absolute top-4 right-4"
+      >
+        &times;
+      </button>
+
+      <form
+        class="space-y-6 max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md"
+        method="POST"
+        action="{{ url_for('add_tv') }}"
+        id="add_tv_form"
+      >
+        <!-- Title -->
+        <h2 class="text-2xl font-bold text-gray-800 text-center">
+          Add Smart TV
+        </h2>
+
+        <!-- TV Label -->
+        <div class="mb-2">
+          <label class="block text-sm font-medium text-gray-700 mb-1"
+            >TV Label</label
+          >
+          <input
+            type="text"
+            name="tv_label"
+            placeholder="e.g., Living Room TV"
+            class="w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-md px-4 py-2"
+            required
+          />
         </div>
-      {% endif %}
-    {% endwith %}
-  
 
-<header
-  class="flex justify-between items-center p-6 header border-b border-gray-800 "
->
-  <img src={{url_for('static', filename='images/logos/favicon.png')}} alt="Logo"
-  class="h-[50px] w-[50px] cursor-pointer">
+        <!-- IP Address -->
+        <div class="mb-2">
+          <label class="block text-sm font-medium text-gray-700 mb-1"
+            >TV IP Address</label
+          >
+          <input
+            type="text"
+            name="ip_address"
+            placeholder="e.g., 192.168.1.100"
+            class="w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-md px-4 py-2"
+            required
+          />
+        </div>
 
-  <p class="text-white text-2xl font-bold hidden sm:block">User Dashboard</p>
+        <!-- Smart Home Platform -->
+        <div class="mb-2">
+          <label class="block text-sm font-medium text-gray-700 mb-1"
+            >Smart Home Platform</label
+          >
+          <select
+            name="platform"
+            class="w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-md px-4 py-2"
+            required
+          >
+            <option value="">Select one</option>
+            <option value="Alexa">Amazon Alexa</option>
+            <option value="Google">Google Home</option>
+            <option value="Tizen">Tizen by Samsung</option>
+            <option value="HomeKit">Apple HomeKit</option>
+            <option value="ThinQ">LG ThinQ</option>
+            <option value="VIDAA">Hisense VIDAA</option>
+            <option value="Roku">Roku</option>
+            <option value="Android TV">Android TV</option>
+            <option value="Sony Bravia">Sony Bravia</option>
+          </select>
+        </div>
 
-  <div class="flex items-center justify-between space-x-2">
-    <p class="text-white">{{ user.username }}</p>
-    <svg
-      width="64px"
-      height="64px"
-      viewBox="-4.08 -4.08 32.16 32.16"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      stroke="#ffffff"
-      transform="matrix(1, 0, 0, 1, 0, 0)"
-    >
-      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-      <g
-        id="SVGRepo_tracerCarrier"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      ></g>
-      <g id="SVGRepo_iconCarrier">
-        <circle
-          cx="12"
-          cy="9"
-          r="3"
-          stroke="#ffffff"
-          stroke-width="1.152"
-        ></circle>
-        <path
-          d="M17.9691 20C17.81 17.1085 16.9247 15 11.9999 15C7.07521 15 6.18991 17.1085 6.03076 20"
-          stroke="#ffffff"
-          stroke-width="1.152"
-          stroke-linecap="round"
-        ></path>
-        <path
-          d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7"
-          stroke="#ffffff"
-          stroke-width="1.152"
-          stroke-linecap="round"
-        ></path>
-      </g>
-    </svg>
-  </div>
-</header>
+        <!-- Control Method -->
+        <div class="mb-2">
+          <label class="block text-sm font-medium text-gray-700 mb-1"
+            >Control Method</label
+          >
+          <select
+            name="control_method"
+            class="w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-md px-4 py-2"
+            required
+          >
+            <option value="">Select one</option>
+            <option value="Wi-Fi">Wi-Fi</option>
+            <option value="Bluetooth">Bluetooth</option>
+            <option value="IR">IR Blaster</option>
+            <option value="HDMI-CEC">HDMI-CEC</option>
+          </select>
+        </div>
 
-<!-- Add TV Section -->
-<section class="flex justify-between items-center px-6 mb-6">
-  <h2 class="text-2xl font-semibold text-blue-400 ">My Smart TVs</h2>
-  <button
-    class="text-white hover:text-gray-200 light-text border border-blue-400 rounded-md py-2 px-4 add-button "
-    onclick="toggleform()"
-  >
-    + Add a device
-  </button>
-</section>
-
-<!-- form -->
-<div
-  class="bg-white max-w-xl mx-auto text-black shadow-md rounded-lg p-6 animate-fadeIn hidden mt-10 relative"
-  id="tvForm"
->
-  <h2 class="text-2xl font-bold mb-4 text-black px-10">Add TV to Smart Home</h2>
-  <button
-    onclick="toggleform()"
-    class="text-black hover:text-gray-700 text-4xl light-text absolute top-4 right-4"
-  >
-    &times;
-  </button>
-
- <form class="space-y-6 max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md" method="POST" action="{{ url_for('add_tv') }}">
-  <!-- Title -->
-  <h2 class="text-2xl font-bold text-gray-800 text-center">Add Smart TV</h2>
-
-  <!-- TV Label -->
-  <div class="mb-2">
-    <label class="block text-sm font-medium text-gray-700 mb-1">TV Label</label>
-    <input
-      type="text"
-      name="tv_label"
-      placeholder="e.g., Living Room TV"
-      class="w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-md px-4 py-2"
-      required
-    />
-  </div>
-
-  <!-- IP Address -->
-  <div class="mb-2">
-    <label class="block text-sm font-medium text-gray-700 mb-1">TV IP Address</label>
-    <input
-      type="text"
-      name="ip_address"
-      placeholder="e.g., 192.168.1.100"
-      class="w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-md px-4 py-2"
-      required
-    />
-  </div>
-
-  <!-- Smart Home Platform -->
-  <div class="mb-2">
-    <label class="block text-sm font-medium text-gray-700 mb-1">Smart Home Platform</label>
-    <select
-      name="platform"
-      class="w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-md px-4 py-2"
-      required
-    >
-      <option value="">Select one</option>
-      <option value="Alexa">Amazon Alexa</option>
-      <option value="Google">Google Home</option>
-      <option value="Tizen">Tizen by Samsung</option>
-      <option value="HomeKit">Apple HomeKit</option>
-      <option value="ThinQ">LG ThinQ</option>
-      <option value="VIDAA">Hisense VIDAA</option>
-      <option value="Roku">Roku</option>
-      <option value="Android TV">Android TV</option>
-      <option value="Sony Bravia">Sony Bravia</option>
-    </select>
-  </div>
-
-  <!-- Control Method -->
-  <div class="mb-2">
-    <label class="block text-sm font-medium text-gray-700 mb-1">Control Method</label>
-    <select
-      name="control_method"
-      class="w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-md px-4 py-2"
-      required
-    >
-      <option value="">Select one</option>
-      <option value="Wi-Fi">Wi-Fi</option>
-      <option value="Bluetooth">Bluetooth</option>
-      <option value="IR">IR Blaster</option>
-      <option value="HDMI-CEC">HDMI-CEC</option>
-    </select>
-  </div>
-
-  <!-- Submit Button -->
-  <div>
-    <button
-      type="submit"
-      class=" w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition"
-    >
-      Add TV
-    </button>
-  </div>
-
-  <!-- Note -->
-  <p class="text-xs text-center text-gray-500 mt-20">
-    You can find your TV’s MAC and IP address in its network settings. <br />
-    <span class="text-red-500">Note: This information is stored securely and never shared.</span>
-  </p>
-</form>
-</div>
-
-<!-- card -->
-
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-  {% for tv in tvs %}
-      {% set image_index = loop.index0 % 2 %}
-      {% set image_path = 'images/tvs/tv' ~ (image_index + 1) ~ '.jpeg' %}
-
- <div class="glass-card border-white/20 overflow-hidden hover:border-white/30 transition-all duration-300 group cursor-pointer rounded-lg shadow-lg  relative">
-    <!-- Background image -->
-    <div class="relative h-40 overflow-hidden">
-      <img src="{{ url_for('static', filename='images/tvs/tv3.jpeg') }}" alt="{{ tv.tv_label }}"
-           class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
-      <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-      <div class="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-      <!-- Delete button -->
-      <div class="absolute top-3 right-3" > 
-        <form method="POST" onsubmit="return confirm('Delete this TV?');">
-          <button type="submit" class="glass-card bg-red-500/20 hover:bg-red-500/40 text-red-300 hover:text-red-200 h-8 w-8 p-0 border border-red-400/30 rounded">
-            DELETE
+        <!-- Submit Button -->
+        <div>
+          <button
+            type="submit"
+            class="w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition"
+          >
+            Add TV
           </button>
-        </form>
-      </div>
-
-      <!-- Status badges -->
-      <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between">
-        <span class="glass-card bg-white/10 border-white/20 text-white text-xs px-2 py-1 rounded backdrop-blur-xl">
-          {{ tv.platform }}
-        </span>
-        <span class="glass-card bg-white/10 border-white/20 text-white text-xs px-2 py-1 rounded backdrop-blur-xl">
-          {{ tv.control_method }}
-        </span>
-      </div>
-    </div>
-
-    <!-- Card Header -->
-    <div class="px-4 pt-4 flex align-center justify-between">
-      <h3 class="text-lg text-white flex items-center space-x-2">
-        <span>{{ tv.tv_label }}</span>
-        <span class="opacity-50 animate-spin">
-          <svg class="h-4 w-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582a7.5 7.5 0 0114.836 0H20V4h-5v.582a7.5 7.5 0 01-10.418 0H4z" />
-          </svg>
-        </span>
-      </h3>
-
-     <div class="relative inline-block text-left">
-    <div class="group">
-        <button type="button"
-            class="inline-flex justify-center items-center w-full px-4 py-2 text-sm font-medium text-white bg-gray-800 hover:bg-gray-700 focus:outline-none focus:bg-gray-700">
-            Menu
-            <!-- Dropdown arrow -->
-            <svg class="w-4 h-4 ml-2 -mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M10 12l-5-5h10l-5 5z" />
-            </svg>
-        </button>
-
-        <!-- Dropdown menu -->
-        <div
-            class="absolute left-0 w-40 mt-1 origin-top-left bg-white divide-y divide-gray-100 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-300">
-            <div class="py-1">
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">TV Controls</a>
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View Tv info</a>
-                <a href="#" class="block px-4 py-2 text-sm text-[red] hover:bg-gray-100">Delete TV</a>
-            </div>
         </div>
-    </div>
-</div>
-    </div>
 
-    <!-- Card Content -->
-    <div class="px-4 pb-4 space-y-4 text-sm text-gray-300 mt-4">
-      <div class="flex items-center justify-between">
-        <span>IP Address</span>
-        <span class="font-medium text-white">{{ tv.ip_address }}</span>
-      </div>
-
-      <!-- Controls -->
-      <form method="POST" action="/power-toggle">
-        <button type="submit" class="w-full bg-[#da0000] text-white py-2 rounded power-button">Power Toggle</button>
+        <!-- Note -->
+        <p class="text-xs text-center text-gray-500 mt-20">
+          You can find your TV’s MAC and IP address in its network settings.
+          <br />
+          <span class="text-red-500"
+            >Note: This information is stored securely and never shared.</span
+          >
+        </p>
       </form>
+    </div>
 
-      <div class="flex justify-between space-x-2">
-        <form method="POST" action="volume-down">
-          <button type="submit" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded">Vol -</button>
-        </form>
+    <!-- card -->
 
-        <form method="POST" action="volume-up">
-          <button type="submit" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded">Vol +</button>
-        </form>
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      id="tv-card-grid"
+    >
+      {% for tv in tvs %}
+      <div
+        class="glass-card border-white/20 overflow-hidden hover:border-white/30 transition-all duration-300 group cursor-pointer rounded-lg shadow-lg relative"
+        id="tv-card"
+      >
+        <!-- Background image -->
+        <div class="relative h-40 overflow-hidden">
+          <img
+            src="{{ url_for('static', filename='images/tvs/tv3.jpeg') }}"
+            alt="{{ tv.tv_label }}"
+            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+          />
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"
+          ></div>
+          <div
+            class="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          ></div>
+
+          <!-- Delete button -->
+          <div class="absolute top-3 right-3">
+            <form method="POST" onsubmit="return confirm('Delete this TV?');">
+              <button
+                type="submit"
+                class="glass-card bg-red-500/20 hover:bg-red-500/40 text-red-300 hover:text-red-200 h-8 w-8 p-0 border border-red-400/30 rounded"
+              >
+                DELETE
+              </button>
+            </form>
+          </div>
+
+          <!-- Card Header -->
+          <div class="px-4 pt-4 flex align-center justify-between">
+            <h3 class="text-lg text-white flex items-center space-x-2">
+              <span>{{ tv.tv_label }}</span>
+              <span class="opacity-50 animate-spin">
+                <svg
+                  class="h-4 w-4 text-blue-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 4v5h.582a7.5 7.5 0 0114.836 0H20V4h-5v.582a7.5 7.5 0 01-10.418 0H4z"
+                  />
+                </svg>
+              </span>
+            </h3>
+
+            <div class="relative inline-block text-left">
+              <div class="group">
+                <button
+                  type="button"
+                  class="inline-flex justify-center items-center w-full px-4 py-2 text-sm font-medium text-white bg-gray-800 hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                >
+                  Menu
+                  <!-- Dropdown arrow -->
+                  <svg
+                    class="w-4 h-4 ml-2 -mr-1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path fill-rule="evenodd" d="M10 12l-5-5h10l-5 5z" />
+                  </svg>
+                </button>
+
+                <!-- Dropdown menu -->
+                <div
+                  class="absolute left-0 w-40 mt-1 origin-top-left bg-white divide-y divide-gray-100 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-300"
+                >
+                  <div class="py-1">
+                    <a
+                      href="#"
+                      class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >TV Controls</a
+                    >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >View Tv info</a
+                    >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 text-sm text-[red] hover:bg-gray-100"
+                      >Delete TV</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card Content -->
+          <div class="px-4 pb-4 space-y-4 text-sm text-gray-300 mt-4">
+            <div class="flex items-center justify-between">
+              <span>IP Address</span>
+              <span class="font-medium text-white">{{ tv.ip_address }}</span>
+            </div>
+
+            <!-- Controls -->
+            <form method="POST" action="/power-toggle">
+              <button
+                type="submit"
+                class="w-full bg-[#da0000] text-white py-2 rounded power-button"
+              >
+                Power Toggle
+              </button>
+            </form>
+
+            <div class="flex justify-between space-x-2">
+              <form method="POST" action="volume-down">
+                <button
+                  type="submit"
+                  class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded"
+                >
+                  Vol -
+                </button>
+              </form>
+
+              <form method="POST" action="volume-up">
+                <button
+                  type="submit"
+                  class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded"
+                >
+                  Vol +
+                </button>
+              </form>
+            </div>
+            <div class="flex justify-between space-x-2">
+              <form method="POST" action="channel-up">
+                <button
+                  type="submit"
+                  class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded"
+                >
+                  Ch -
+                </button>
+              </form>
+              <form method="POST" action="channel-down">
+                <button
+                  type="submit"
+                  class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded"
+                >
+                  Ch +
+                </button>
+              </form>
+            </div>
+
+            <!-- connect button  -->
+            <form action="/connect-samsung-tv" method="POST">
+              <button
+                type="submit"
+                class="flex items-center space-x-2 text-gray-400 hover:text-white underline font-medium transition-transform duration-200 ease-in-out hover:-translate-y-1"
+              >
+                <!-- Minimal Connect Icon -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M3 6a1 1 0 0 1 1-1h16a1 1 0 1 1 0 2H4a1 1 0 0 1-1-1Zm0 6a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H4a1 1 0 0 1-1-1Zm1 5a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H4Z"
+                  />
+                </svg>
+                <span>Connect to TV</span>
+              </button>
+            </form>
+          </div>
+        </div>
       </div>
-      <div class="flex justify-between space-x-2">
-        <form method="POST" action="channel-up">
-          <button type="submit" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded">Ch -</button>
-        </form>
-        <form method="POST" action="channel-down">
-          <button type="submit" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded">Ch +</button>
-        </form>
-      </div>
-
-      <!-- connect button  -->
-       <form action="/connect-samsung-tv" method="POST">
-    <button type="submit" class="flex items-center space-x-2 text-gray-400 hover:text-white  underline font-medium transition-transform duration-200 ease-in-out hover:-translate-y-1 ">
-  <!-- Minimal Connect Icon -->
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-    <path d="M3 6a1 1 0 0 1 1-1h16a1 1 0 1 1 0 2H4a1 1 0 0 1-1-1Zm0 6a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H4a1 1 0 0 1-1-1Zm1 5a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H4Z"/>
-  </svg>
-  <span>Connect to TV</span>
-</button>
-</form>
-
+      {% endfor %}
     </div>
   </div>
-  {% endfor %}
-</div>
-<div class="h-screen"></div>
-  </body>
+</body>
 
 {% endblock %}
