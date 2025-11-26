@@ -127,6 +127,8 @@ def get_tv_ip(user_id, label = None):
 # routes
 @app.route("/")
 def homepage():
+    if current_user.is_authenticated:
+        return redirect(url_for('dashboard'))
     return render_template("index.html")
 
 
@@ -190,10 +192,8 @@ def login_password():
     user = User.query.filter_by(email=email).first()
     if user and user.check_password_hash(password):
         login_user(user)
-        # flash('Logged in successfully.')
         return redirect(url_for('dashboard'))
     else:
-        # flash('Invalid email or password. Please try again.', 'error')
         return render_template("logIn.html", error="Invalid email or password. Please try again. ")
 
 @app.route("/authorize")
@@ -227,6 +227,13 @@ def authorize():
         login_user(new_user) 
         return redirect(url_for('dashboard'))
     
+
+@app.route("/logout", methods=['POST'])
+@login_required
+def logout():
+    # clearing user session
+    logout_user()
+    return redirect(url_for('homepage'))
 
 
 # @login_required
@@ -268,16 +275,15 @@ def dashboard():
 
 
 @app.route("/delete_tv/<int:tv_id>", methods=['POST'])
+@login_required
 def delete_tv(tv_id):
     tv = SmartTvs.query.get_or_404(tv_id)
     if tv.user_id != current_user.id:
-        # flash("Unauthorized action.", "error")
-        return jsonify({"status": "error", "message": "Unauthorized"}), 403
+        return redirect(url_for('dashboard'))
     
     db.session.delete(tv)
     db.session.commit()
-    # flash("TV deleted successfully.", "success")
-    return jsonify({"status": "success", "message": "Tv deleted successfully."}), 200
+    return redirect(url_for('dashboard'))
 
 
 # tv brand routing controls
@@ -313,7 +319,7 @@ def volume_down():
 
 if __name__ == "__main__":
     with app.app_context():  
-        db.drop_all()  
+        # db.drop_all()  
         db.create_all()
     app.run( host='localhost', port=5000, debug = True)
 

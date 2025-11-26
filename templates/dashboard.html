@@ -2,11 +2,9 @@
 endblock %} {% block content %}
 
 <!-- Header -->
-<body class="font-poppins overflow-x-hidden px-6">
+<body class="font-poppins overflow-x-hidden px-4 relative">
   <div class="blob"></div>
   <div class="blob"></div>
-
-
 
   <header
     class="flex justify-between items-center p-6 header border-b border-gray-800"
@@ -217,17 +215,6 @@ endblock %} {% block content %}
             class="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           ></div>
 
-          <!-- Delete button -->
-          <div class="absolute top-3 right-3">
-            <form method="POST" onsubmit="return confirm('Delete this TV?');">
-              <button
-                type="submit"
-                class="glass-card bg-red-500/20 hover:bg-red-500/40 text-red-300 hover:text-red-200 h-8 w-8 p-0 border border-red-400/30 rounded"
-              >
-                DELETE
-              </button>
-            </form>
-          </div>
 
           <!-- Card Header -->
           <div class="px-4 pt-4 flex align-center justify-between">
@@ -283,10 +270,18 @@ endblock %} {% block content %}
                       class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       >View Tv info</a
                     >
-                    <a
-                      href="#"
-                      class="block px-4 py-2 text-sm text-[red] hover:bg-gray-100"
-                      >Delete TV</a
+                    <form
+                      method="POST"
+                      action="/delete_tv/{{ tv.id }}"
+                      onsubmit="return confirm('Delete this TV?');" class="delete-tv-form"
+                    >
+                      <button
+                        type="submit"
+                        class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                      >
+                        Delete TV
+                      </button>
+                    </form>
                     >
                   </div>
                 </div>
@@ -375,6 +370,16 @@ endblock %} {% block content %}
       </div>
       {% endfor %}
     </div>
+
+    <!-- logout -->
+      <div class="flex space-x-2 mt-10 mb-10 fixed bottom-0 left-[2%]">
+      <form method="POST" action="{{url_for('logout')}}" class="text-white">
+        <button type="submit" class="flex items-center space-x-2 transition-transform duration-300 transform hover:-translate-y-1 hover:scale-110">
+     <svg viewBox="0 0 24 24" class="w-8 h-8" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9.00195 7C9.01406 4.82497 9.11051 3.64706 9.87889 2.87868C10.7576 2 12.1718 2 15.0002 2L16.0002 2C18.8286 2 20.2429 2 21.1215 2.87868C22.0002 3.75736 22.0002 5.17157 22.0002 8L22.0002 16C22.0002 18.8284 22.0002 20.2426 21.1215 21.1213C20.2429 22 18.8286 22 16.0002 22H15.0002C12.1718 22 10.7576 22 9.87889 21.1213C9.11051 20.3529 9.01406 19.175 9.00195 17" stroke="white" stroke-width="1.5" stroke-linecap="round"></path> <path d="M15 12L2 12M2 12L5.5 9M2 12L5.5 15" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>         Logout
+     </button>
+
+     </form>
+
   </div>
 </body>
 
