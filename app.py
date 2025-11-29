@@ -47,8 +47,8 @@ async def main_application_logic():
 
 google = oauth.register(
     name= "google",
-    client_id = os.environ.get('CLIENT_ID'),
-    client_secret = os.environ.get('CLIENT_SECRET'),
+    client_id = os.getenv('CLIENT_ID'),
+    client_secret = os.getenv('CLIENT_SECRET'),
     server_metadata_url = "https://accounts.google.com/.well-known/openid-configuration",
     api_base_url = "https://www.googleapis.com/oauth2/v1/",
     client_kwargs = {'scope': 'openid email profile'}
