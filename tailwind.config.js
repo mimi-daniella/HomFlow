@@ -2,10 +2,9 @@
 module.exports = {
   content: [
     "./templates/**/*.html",
-    "./src/**/*.{js,jsx,ts,tsx}", // if you're using React or similar
-    "./components/**/*.{html,js}", // if you have components elsewhere
+    "./src/**/*.{js,jsx,ts,tsx}",
+    "./components/**/*.{html,js}",
   ],
-
   theme: {
     extend: {
       fontFamily: {
