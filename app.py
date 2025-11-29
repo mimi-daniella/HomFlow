@@ -1,8 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify
-from flask_login import login_user, LoginManager, UserMixin, login_required, logout_user, current_user
-from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
-import re 
+from flask import Flask, render_template, request, redirect, url_for, jsonify
+from models import db, User, Validation, SmartTvs, get_tv_ip
+from flask_migrate import Migrate
+from flask_login import login_user, LoginManager, login_required, logout_user, current_user
 from authlib.integrations.flask_client import OAuth
 import asyncio
 from samsung import SamsungController 
@@ -12,8 +11,10 @@ from dotenv import load_dotenv
 load_dotenv()
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///homflow.db"
-db = SQLAlchemy(app)
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+db.init_app(app)
+migrate =  Migrate(app, db)
 oauth = OAuth(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -53,75 +54,6 @@ google = oauth.register(
     api_base_url = "https://www.googleapis.com/oauth2/v1/",
     client_kwargs = {'scope': 'openid email profile'}
 )
-
-# user model
-class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(100), unique=True, nullable= False)
-    username = db.Column(db.String(25), nullable = False)
-    password_hash = db.Column(db.String(128), nullable=False)
-    google_id = db.Column(db.String(128), unique=True, nullable=True)
-    
-
-    def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
-
-    def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
-
-    def __repr__(self):
-        return f"<User {self.email} {self.username}>"
-    
-
-class Validation:
-    def __init__(self, data):
-        self.data = data
-        self.errors = {}
-
-    def is_valid_email(self, pattern):
-        email = self.data.get("email")
-        if not re.match(pattern, email):
-            self.errors['email'] = "Invalid email adress"
-        return re.match(pattern, email) is not None
-    
-    def is_unique_email(self, email):
-        existing_user = User.query.filter_by(email=email).first()
-        if existing_user:
-            self.errors['email'] = "Email has already been used. Please try a different one."
-    
-    def is_strong_password(self): 
-        password = self.data.get("password")
-        if len(password) < 8:
-            self.errors['password'] = "Password must be at least 8 characters long"
-        confirm_password = self.data.get('confirm_password')
-        if password != confirm_password:
-            self.errors['confirm_password'] = "Passwords do not match"
-
-    def is_valid_form(self):
-        self.is_valid_email( r'^[\w\.-]+@[\w\.-]+\.\w+$')
-        self.is_unique_email(self.data.get("email"))
-        self.is_strong_password()
-        return not self.errors
-    
-
-# smart tv model
-class SmartTvs(db.Model):
-        id = db.Column(db.Integer, primary_key = True)
-        tv_label = db.Column(db.String(50), nullable = False)
-        ip_address = db.Column(db.String(50), nullable = False)
-        platform = db.Column(db.String(50), nullable = False)
-        control_method = db.Column(db.String(50), nullable = False)
-        user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
-        # relationship
-        user = db.relationship('User', backref = db.backref('smart_tvs', lazy = True))
-
-
-def get_tv_ip(user_id, label = None):
-    if label:
-        tv = SmartTvs.query.filter_by(user_id=user_id, tv_label=label).first()
-    else:
-        tv = SmartTvs.query.filter_by(user_id=user_id).first()
-    return tv.ip_address if tv else None
 
 
 # routes
@@ -319,8 +251,7 @@ def volume_down():
 
 if __name__ == "__main__":
     with app.app_context():  
-        db.create_all()
-    app.run( host='localhost', port=5000, debug = True)
+        app.run( host='localhost', port=5000, debug = True)
 
 
  
