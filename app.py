@@ -8,6 +8,7 @@ from samsung import SamsungController
 import os
 from dotenv import load_dotenv
 
+
 load_dotenv()
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///homflow.db"
