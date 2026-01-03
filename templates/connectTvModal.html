@@ -1,0 +1,92 @@
+{% extends 'base.html' %} 
+{% block head %}
+    {{ super() }}
+     <link rel="stylesheet" href="{{url_for('static', filename='css/cyber.css')}}">    <!-- for cyber popup -->
+{% endblock %}
+{% block content %}
+
+<button class="cyber-btn" popovertarget="upgrade" popovertargetaction="show" aria-label="Upgrade" data-action="Upgrade">
+  <span class="backdrop">
+    <span class="corner"></span>
+  </span>
+  <kbd>C</kbd>
+  <span>Connect</span>
+  <div class="glitch" aria-hidden="true">
+    <span class="backdrop">
+      <span class="corner"></span>
+    </span>
+    <kbd>C</kbd>
+    <span class="letters">
+      <span>C</span>
+      <span>o</span>
+      <span>n</span>
+      <span>n</span>
+      <span>e</span>
+      <span>c</span>
+      <span>t</span>
+    </span>
+  </div>
+</button>
+<div class="modal" popover="auto" id="upgrade">
+  <section class="modal__body">
+    <div class="body__backdrop">
+      <div class="backdrop">
+        <div class="corner"></div>
+      </div>
+    </div>
+
+
+    <div class="body__content">
+      <h2>
+        <span>Connect to this device?</span>
+      </h2>
+      <div class="body__text">
+        <p>
+          You are one step away from unlocking Pro features and content.
+          Your subscription will be updated in the next billing cycle. You
+          will not be charged for this cycle.
+        </p>
+        <p>Do you want to proceed?</p>
+      </div>
+      <div class="modal__glitch" aria-hidden="true">
+        <h2>
+          <span>Connect to this device?</span>
+        </h2>
+        <div class="body__text">
+          <p>
+            You are one step away from unlocking Pro features and content.
+            Your subscription will be updated in the next billing cycle. You
+            will not be charged for this cycle.
+          </p>
+          <p>Do you want to proceed?</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="modal__actions">
+    <button aria-label="Cancel" class="cyber-btn" data-action="Cancel" popovertarget="upgrade" popovertargetaction="close">
+      <span class="backdrop">
+        <span class="corner"></span>
+      </span>
+      <kbd class="esc-key">esc</kbd>
+      <span class="cancel-btn">Cancel</span>
+    </button>
+
+    <!-- connect form -->
+     <form action="/connect-samsung-tv" method="POST">
+    <button autofocus aria-label="Proceed" class="cyber-btn proceed-btn" data-action="Proceed" popovertarget="upgrade" popovertargetaction="close" type="submit">
+      <span class="backdrop">
+        <span class="corner"></span>
+      </span>
+      <kbd><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 4v7a4 4 0 0 1-4 4H4"></path>
+          <path d="m9 10-5 5 5 5"></path>
+        </svg></kbd>
+      <span>Proceed</span>
+    </button>
+    </form>
+  </div>
+</div>
+
+
+{% endblock %}

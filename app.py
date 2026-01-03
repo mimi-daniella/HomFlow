@@ -4,9 +4,9 @@ from flask_migrate import Migrate
 from flask_login import login_user, LoginManager, login_required, logout_user, current_user
 from authlib.integrations.flask_client import OAuth
 import asyncio
-from samsung import SamsungController 
 import os
 from dotenv import load_dotenv
+from tvControls import run_tv_command, test_connection
 
 
 load_dotenv()
@@ -23,28 +23,19 @@ login_manager.login_view = "login_password"
 
 
 # Samsung websocket
-async def main_application_logic():
-    print ("Starting Samsung app...")
+# async def main_application_logic():
+#     print ("Starting app...")
 
-    if not current_user.is_authenticated:
-        print("User is not logged in.")
-        return
-    tv_ip = get_tv_ip(current_user.id)
+#     if not current_user.is_authenticated:
+#         print("User is not logged in.")
+#         return
+#     tv_ip = get_tv_ip(current_user.id)
 
-    if not tv_ip:
-        # flash("No TV found. Please add a TV to your account.", "error")
-        return
+#     if not tv_ip:
+#         print("No TV found for the user.")
+#         return
 
     # initialize the class
-    controller = SamsungController(host=tv_ip)
-    # testing connection
-    connected = await controller.connect()
-    if connected:
-        print("Sending commands to tv for testing connection...")
-        await controller.volume_up()
-        await controller.volume_down()
-    else:
-        print("Cannot proceed with the application. Please check your connection to the TV.")
 
 
 google = oauth.register(
@@ -73,17 +64,12 @@ def page_not_found(e):
 @app.route("/register", methods =['GET', 'POST'])
 def register():
     if request.method == 'GET':
-        return render_template("signUp.html", errors = {})
+        return render_template("signUp.html", errors = {}, success = None, error=None)
     
     try:
         validation = Validation(request.form)
         if not validation.is_valid_form():
-            first_error_key = next(iter(validation.errors))
-            error_message = validation.errors[first_error_key][0]
-            return jsonify({
-                "status": "error",
-                "message": f"Validation failed: {error_message}"  
-                }), 400
+            return render_template("signUp.html", errors=validation.errors, success=None, error = None)
 
         new_user = User(
         email = request.form['email'],
@@ -93,11 +79,11 @@ def register():
         db.session.add(new_user)
         db.session.commit()
         login_user(new_user)
-        return jsonify({"status": "ok", "message": "Registration successful! \n You can now access dashboard!", "redirect_url": "/dashboard"}), 200
+        return render_template("signUp.html", success="Registration Successful", errors = {}, error = None) #success for sweetalert2 template
     except Exception as e:
         db.session.rollback()
-        print(f"Error during user registration: {e}")
-        return jsonify({"status": "error", "message": f"Database error ({str(e)})"}), 500
+        print(f'Error during registration: {e}')
+        return render_template("signUp.html", errors = {}, success=None,error="Registration failed.")
 
 
 
@@ -119,15 +105,24 @@ def login():
 @app.route("/login_password", methods = ['GET', 'POST'])
 def login_password():
     if request.method == 'GET':
-        return render_template("logIn.html")
+        return render_template("logIn.html", success = None, error = None)
     email = request.form['email']
     password = request.form['password']
     user = User.query.filter_by(email=email).first()
-    if user and user.check_password_hash(password):
+    if not user:
+        return render_template("logIn.html", error="Email does not exist. Please sign up instead.", success=None)
+    if user and user.check_password(password):
         login_user(user)
-        return redirect(url_for('dashboard'))
+        return render_template("logIn.html", success="Login Successful", error = None) 
     else:
-        return render_template("logIn.html", error="Invalid email or password. Please try again. ")
+        return render_template("logIn.html", error="Invalid email or password. Please try again.", success=None)
+        
+@app.route("/dashboard")
+@login_required
+def dashboard():
+    user_tvs = SmartTvs.query.filter_by(user_id=current_user.id).all()
+    return render_template("dashboard.html",user = current_user, tvs=user_tvs)
+        
 
 @app.route("/authorize")
 def authorize():
@@ -168,6 +163,19 @@ def logout():
     logout_user()
     return redirect(url_for('homepage'))
 
+@app.route("/delete_account/<int:user_id>", methods=['POST'])
+def delete_account(user_id):
+    user = User.query.get(user_id)
+    if user and user.id == current_user.id:
+        db.session.delete(user)
+        db.session.commit()
+        return redirect(url_for("homepage"))
+    else:
+        pass
+    
+
+
+
 
 # @login_required
 @app.route("/add_tv", methods=['POST'])
@@ -184,7 +192,6 @@ def add_tv():
         )
         db.session.add(tv)
         db.session.commit()
-        
         new_tv_data = { 
             "id": tv.id, 
             "tv_label": tv.tv_label, 
@@ -192,19 +199,14 @@ def add_tv():
             "platform": tv.platform, 
             "control_method": tv.control_method 
         }
-        return redirect(url_for('dashboard'))
+        return render_template("dashboard.html", user=current_user, tvs=current_user.smart_tvs, success="TV added successfully!", error=None)
+        
     except Exception as e:
         db.session.rollback()
         print(f"ERROR during TV addition: {e}") 
-        return jsonify({"status": "error", "message": f"Database Error: {str(e)}"}), 500
+        return render_template("dashboard.html", user=current_user, tvs=current_user.smart_tvs, success=None, error="Failed to add TV. Please try again.")
         
 
-
-@app.route("/dashboard")
-@login_required
-def dashboard():
-    user_tvs = SmartTvs.query.filter_by(user_id=current_user.id).all()
-    return render_template("dashboard.html",user = current_user, tvs=user_tvs)
 
 
 @app.route("/delete_tv/<int:tv_id>", methods=['POST'])
@@ -212,42 +214,42 @@ def dashboard():
 def delete_tv(tv_id):
     tv = SmartTvs.query.get_or_404(tv_id)
     if tv.user_id != current_user.id:
-        return redirect(url_for('dashboard'))
-    
-    db.session.delete(tv)
-    db.session.commit()
-    return redirect(url_for('dashboard'))
+        return render_template("dashboard.html", user=current_user, tvs=current_user.smart_tvs, success=None, error="Unauthorized action.")
+    try:
+        db.session.delete(tv)
+        db.session.commit()
+        return render_template("dashboard.html", user = current_user, tvs = current_user.smart_tvs, success="Tv deleted successfully!" , error=None)
+    except Exception as e:
+        db.session.rollback()
+        print(f"ERROR during TV deletion: {e}")
+        return render_template("dashboard.html", user=current_user, tvs=current_user.smart_tvs, success=None, error="Failed to delete TV. Please try again.")
 
 
 # tv brand routing controls
 @app.route("/connect-samsung-tv", methods=['POST'])
 def connect_samsung():
-    asyncio.run(main_application_logic())
-    return True
+    try:
+        print("Starting connection to Samsung TV...")
+        asyncio.run(test_connection())
+        print("Samsung TV connection complete.")
+        return redirect(url_for('dashboard'))
+
+    except Exception as e:
+        print(f"Error during Samsung TV connection: {e}")
+        return jsonify({"success": False, "error": {e}}), 500
+    
 
 @app.route('/power-toggle', methods=['POST'])
 def power_toggle():
-
-    tv_ip = get_tv_ip(current_user.id)
-    controller = SamsungController(host=tv_ip)
-    asyncio.run(controller.power_toggle())
-    return jsonify({"status": "success", "message": "Power toggle"}), 200
+    return run_tv_command("power_toggle")
 
 @app.route('/volume-up', methods=['POST'])
 def volume_up():
-
-    tv_ip = get_tv_ip(current_user.id)
-    controller = SamsungController(host=tv_ip)
-    asyncio.run(controller.volume_up())
-    return jsonify({"status": "success", "message": "volume_up"}), 200
+    return run_tv_command("volume_up")
 
 @app.route("/volume-down", methods=['POST'])
 def volume_down():
-
-    tv_ip = get_tv_ip(current_user.id)
-    controller = SamsungController(host=tv_ip)
-    asyncio.run(controller.volume_down())
-    return jsonify({"status": "success", "message": "volume_down"}), 200
+    return run_tv_command("volume_down")
 
 
 if __name__ == "__main__":

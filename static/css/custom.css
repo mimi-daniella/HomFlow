@@ -2051,6 +2051,7 @@ body{
   padding: 0;
   height: 100vh;
   background-color: #242124;
+  overflow-x: none;
 
 }
 

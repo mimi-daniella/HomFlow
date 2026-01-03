@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block title %}Sign Up - HomFlow{% endblock %} {%
 block content %}
-
+ <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
 <body class="font-poppins bg-black">
   <div class="py-4">
     <div
@@ -124,12 +124,42 @@ block content %}
           </div>
           <div class="mt-4 flex items-center justify-between">
             <span class="border-b w-1/5 md:w-1/4"></span>
-            <a href="{{ url_for('login_password') }}" class="text-xs text-gray-500 uppercase">or log in</a>
+            <a
+              href="{{ url_for('login_password') }}"
+              class="text-xs text-gray-500 uppercase"
+              >or log in</a
+            >
             <span class="border-b w-1/5 md:w-1/4"></span>
           </div>
         </form>
       </div>
     </div>
   </div>
+
+  <!-- Sweetalert -->
+  {% if success %}
+  <script>
+    Swal.fire({
+      icon: "success",
+      title: "Signup Complete",
+      text: "{{ success }}",
+      showConfirmButton: false,
+      timer: 1500,
+    }).then(() => {
+      window.location.href = "{{ url_for('dashboard') }}";
+    })
+  </script>
+  {% endif %}
+
+  {% if error %}
+    <script>
+      Swal.fire({
+        icon: "error",
+        title: "Oops... something went wrong",
+        text: "{{ error }}",
+        footer: '<a href="{{url_for("signUp")}}"> Retry Signup</a>'
+      })
+    </script>
+  {% endif %}
 </body>
 {% endblock %}

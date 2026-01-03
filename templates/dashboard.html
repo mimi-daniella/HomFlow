@@ -2,15 +2,12 @@
 endblock %} {% block content %}
 
 <!-- Header -->
-<body class="font-poppins overflow-x-hidden px-4 relative">
-  <div class="blob"></div>
-  <div class="blob"></div>
+<body class="font-poppins px-4 relative">
 
   <header
-    class="flex justify-between items-center p-6 header border-b border-gray-800"
+    class="flex justify-between header border-b border-gray-800"
   >
-    <img src={{url_for('static', filename='images/logos/favicon.png')}}
-    alt="Logo" class="h-[50px] w-[50px] cursor-pointer">
+    <img src={{url_for('static', filename='images/logos/favicon.png')}} alt="Logo" class="h-[50px] w-[50px] cursor-pointer">
 
     <p class="text-white text-2xl font-bold hidden sm:block">User Dashboard</p>
 
@@ -65,7 +62,7 @@ endblock %} {% block content %}
     "
   >
     <section class="flex justify-between items-center px-6 mb-6">
-      <h2 class="text-2xl font-semibold text-blue-400">My Smart TVs</h2>
+      <h2 class="text-2xl font-semibold text-[orange]">My Devices</h2>
       <button
         class="text-white hover:text-gray-200 light-text border border-blue-400 rounded-md py-2 px-4 add-button"
         onclick="toggleform()"
@@ -181,7 +178,7 @@ endblock %} {% block content %}
 
         <!-- Note -->
         <p class="text-xs text-center text-gray-500 mt-20">
-          You can find your TV’s MAC and IP address in its network settings.
+          You can find your TV's MAC and IP address in its network settings.
           <br />
           <span class="text-red-500"
             >Note: This information is stored securely and never shared.</span
@@ -198,15 +195,15 @@ endblock %} {% block content %}
     >
       {% for tv in tvs %}
       <div
-        class="glass-card border-white/20 overflow-hidden hover:border-white/30 transition-all duration-300 group cursor-pointer rounded-lg shadow-lg relative"
+        class="glass-card border-white/20 hover:border-white/30 transition-all duration-300 group cursor-pointer rounded-lg shadow-lg relative"
         id="tv-card"
       >
         <!-- Background image -->
-        <div class="relative h-40 overflow-hidden">
+        <div class="relative h-30 overflow-hidden">
           <img
             src="{{ url_for('static', filename='images/tvs/tv3.jpeg') }}"
             alt="{{ tv.tv_label }}"
-            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+            class="w-1/2 h-1/2 object-cover transition-transform duration-300 group-hover:scale-110"
           />
           <div
             class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"
@@ -238,8 +235,9 @@ endblock %} {% block content %}
             </h3>
 
             <div class="relative inline-block text-left">
-              <div class="group">
+              <div>
                 <button
+                id="menu-button"
                   type="button"
                   class="inline-flex justify-center items-center w-full px-4 py-2 text-sm font-medium text-white bg-gray-800 hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
                 >
@@ -257,7 +255,8 @@ endblock %} {% block content %}
 
                 <!-- Dropdown menu -->
                 <div
-                  class="absolute left-0 w-40 mt-1 origin-top-left bg-white divide-y divide-gray-100 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-300"
+                id="dropdown-menu"
+                  class="absolute left-0 w-40 mt-1 origin-top-left bg-white divide-y divide-gray-100 rounded-md shadow-lg opacity-0 invisible transition duration-300"
                 >
                   <div class="py-1">
                     <a
@@ -273,11 +272,11 @@ endblock %} {% block content %}
                     <form
                       method="POST"
                       action="/delete_tv/{{ tv.id }}"
-                      onsubmit="return confirm('Delete this TV?');" class="delete-tv-form"
+                      class="delete-tv-form"
                     >
                       <button
                         type="submit"
-                        class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                        class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100" id="delete-tv-button" data-tv-id="{{tv.id}}"
                       >
                         Delete TV
                       </button>
@@ -345,30 +344,14 @@ endblock %} {% block content %}
             </div>
 
             <!-- connect button  -->
-            <form action="/connect-samsung-tv" method="POST">
-              <button
-                type="submit"
-                class="flex items-center space-x-2 text-gray-400 hover:text-white underline font-medium transition-transform duration-200 ease-in-out hover:-translate-y-1"
-              >
-                <!-- Minimal Connect Icon -->
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    d="M3 6a1 1 0 0 1 1-1h16a1 1 0 1 1 0 2H4a1 1 0 0 1-1-1Zm0 6a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H4a1 1 0 0 1-1-1Zm1 5a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H4Z"
-                  />
-                </svg>
-                <span>Connect to TV</span>
-              </button>
-            </form>
-          </div>
+            {% include 'connectTvModal.html' %}
+
+           
+          </form>
         </div>
       </div>
-      {% endfor %}
+    </div>
+    {% endfor %}
     </div>
 
     <!-- logout -->
@@ -380,7 +363,104 @@ endblock %} {% block content %}
 
      </form>
 
+     <form action="{{url_for('delete_account', user_id=current_user.id)}}" method="POST" id="delete-account-form">
+        <button class="text-4xl text-red-500 font-bold" id="delete-account-button">
+          DELETE ACCOUNT
+        </button>
+     </form>
   </div>
 </body>
 
+{% if success %}
+  <script>
+    Swal.fire({
+      icon: "success",
+      title: "Success",
+      text: "{{success}}",
+      showConfirmButton: false, 
+      timer: 2000,
+      position: 'top-end',
+      toast: true
+    })
+  </script>
+{% endif %}
+
+{% if errror %}
+  <script>
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "{{error}}",
+      showConfirmButton: false,
+      timer: 2000,
+      position: 'top-end',
+      toast: true
+    })
+  </script>
+{% endif %}
+
+
+
+<script>
+
+const menuButton = document.getElementById("menu-button");
+const dropdownMenu = document.getElementById("dropdown-menu");
+
+menuButton.addEventListener("click", () =>{
+  const isHidden = dropdownMenu.classList.contains("invisible");
+  if (isHidden) {
+    dropdownMenu.classList.remove("invisible", "opacity-0");
+    dropdownMenu.classList.add("opacity-100");
+  } else{
+    dropdownMenu.classList.add("invisible");
+    dropdownMenu.classList.remove("opacity-100");
+  }
+})
+
+document.addEventListener("click", (event) =>{
+  if (!dropdownMenu.contains(event.target) && !menuButton.contains(event.target)){
+    dropdownMenu.classList.add("invisible");
+    dropdownMenu.classList.remove("opacity-100");
+  }
+})
+
+// document.querySelectorAll(".delete-tv-form").forEach(form => {
+//   form.addEventListener("submit", function(e) {
+//     e.preventDefault();
+//     Swal.fire({
+//       title: "Delete This TV?",
+//       text: "This action cannot be undone.",
+//       icon: "warning",
+//       iconColor: "#dc2626",
+//       confirmButtonText: "Delete",
+//       confirmButtonColor: "#dc2626",
+//       showCancelButton: true,
+//       cancelButtonText: "Cancel"
+//     }).then((result) => {
+//       if (result.isConfirmed) {
+//         form.submit();
+//       }
+//     });
+//   });
+// });
+
+// document.querySelector("#delete-account-form").addEventListener("submit", (e)=>{
+// e.preventDefault();
+//     Swal.fire({
+//       title: "Delete Your Account?",
+//       text: "This action cannot be undone.",
+//       icon: "warning",
+//       iconColor: "#dc2626",
+//       confirmButtonText: "Delete",
+//       confirmButtonColor: "#dc2626",
+//       showCancelButton: true,
+//       cancelButtonText: "Cancel"
+//     }).then((result) => {
+//       if (result.isConfirmed) { 
+//         form.submit();
+//     })
+//     });
+
+
+ </script>
 {% endblock %}
