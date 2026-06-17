@@ -45,8 +45,6 @@
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
-              console.log("Progress bar in view:", entry.target);
-
               entry.target.classList.add("w-[80%]");
               observer.unobserve(entry.target);
             }

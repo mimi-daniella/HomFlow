@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for, jsonify, redirect
 from models import db, User, Validation, SmartTvs, get_tv_ip
 from flask_migrate import Migrate
 from flask_login import login_user, LoginManager, login_required, logout_user, current_user
@@ -7,35 +7,29 @@ import asyncio
 import os
 from dotenv import load_dotenv
 from tvControls import run_tv_command, test_connection
+from routes.homepage import homepage_bp
+from routes.features import features_bp
+
 
 
 load_dotenv()
 app = Flask(__name__)
+
+#routes
+app.register_blueprint(homepage_bp)
+app.register_blueprint(features_bp)
+
+
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///homflow.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+
 db.init_app(app)
 migrate =  Migrate(app, db)
 oauth = OAuth(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login_password"
-
-
-# Samsung websocket
-# async def main_application_logic():
-#     print ("Starting app...")
-
-#     if not current_user.is_authenticated:
-#         print("User is not logged in.")
-#         return
-#     tv_ip = get_tv_ip(current_user.id)
-
-#     if not tv_ip:
-#         print("No TV found for the user.")
-#         return
-
-    # initialize the class
 
 
 google = oauth.register(
@@ -48,43 +42,32 @@ google = oauth.register(
 )
 
 
-# routes
-@app.route("/")
-def homepage():
-    if current_user.is_authenticated:
-        return redirect(url_for('dashboard'))
-    return render_template("index.html")
-
-
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template("pageNotFound.html"), 404
 
 
-@app.route("/register", methods =['GET', 'POST'])
+@app.route("/register", methods=['GET', 'POST'])
 def register():
     if request.method == 'GET':
-        return render_template("signUp.html", errors = {}, success = None, error=None)
-    
+        return render_template("signUp.html", errors={}, success=None, error=None)
+
     try:
         validation = Validation(request.form)
         if not validation.is_valid_form():
-            return render_template("signUp.html", errors=validation.errors, success=None, error = None)
+             return render_template("signUp.html", errors=validation.errors, success=None, error = None)
 
         new_user = User(
-        email = request.form['email'],
-        username = request.form['username']
+            email=request.form['email'],
+            username=request.form['username']
         )
         new_user.set_password(request.form['password'])
         db.session.add(new_user)
         db.session.commit()
-        login_user(new_user)
-        return render_template("signUp.html", success="Registration Successful", errors = {}, error = None) #success for sweetalert2 template
+        return render_template("signUp.html", success="Registration successful.", errors = {}, error = None)
     except Exception as e:
         db.session.rollback()
-        print(f'Error during registration: {e}')
-        return render_template("signUp.html", errors = {}, success=None,error="Registration failed.")
-
+        return render_template("signUp.html", errors = {}, success=None,error=f"Registration failed. {e}")
 
 
 @login_manager.user_loader
@@ -102,20 +85,23 @@ def login():
     redirect_uri = url_for('authorize', _external=True)
     return google.authorize_redirect(redirect_uri)
 
-@app.route("/login_password", methods = ['GET', 'POST'])
+@app.route("/login_password", methods=['GET', 'POST'])
 def login_password():
     if request.method == 'GET':
-        return render_template("logIn.html", success = None, error = None)
+        return render_template("logIn.html", success=None, error=None)
+
     email = request.form['email']
     password = request.form['password']
     user = User.query.filter_by(email=email).first()
+
     if not user:
-        return render_template("logIn.html", error="Email does not exist. Please sign up instead.", success=None)
-    if user and user.check_password(password):
+        return render_template("logIn.html", success=None, error="Invalid credentials. Please try again.")
+
+    if user and user.check_password( password):
         login_user(user)
-        return render_template("logIn.html", success="Login Successful", error = None) 
+        return render_template("login.html", success="Login successful.", error=None)
     else:
-        return render_template("logIn.html", error="Invalid email or password. Please try again.", success=None)
+        return render_template("logIn.html", success=None, error="Invalid credentials. Please try again.")
         
 @app.route("/dashboard")
 @login_required
