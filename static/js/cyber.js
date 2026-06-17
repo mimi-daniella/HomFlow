@@ -1,16 +1,3 @@
-// Sound effects
-const audio = {
-  slide: new Audio(
-    "https://cdn.freesound.org/previews/367/367997_6512973-lq.mp3"
-  ),
-  accept: new Audio(
-    "https://cdn.freesound.org/previews/220/220166_4100837-lq.mp3"
-  ),
-  reject: new Audio(
-    "https://cdn.freesound.org/previews/657/657950_6142149-lq.mp3"
-  ),
-};
-
 // Modal + glitch logic
 const popover = document.querySelector("#connectModal");
 const actions = document.querySelector(".modal__actions");

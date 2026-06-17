@@ -12,6 +12,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(25), nullable = False)
     password_hash = db.Column(db.String(128), nullable=False)
     google_id = db.Column(db.String(128), unique=True, nullable=True)
+    is_verified = db.Column(db.Boolean, default = False)
     
 
     def set_password(self, password):

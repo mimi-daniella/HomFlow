@@ -15,8 +15,6 @@ module.exports = {
         primary: "#6F00FF",
         secondary: "#14b8a6",
         secondaryHover: "#1ABC",
-        accent: "",
-        specialBlue: "#1ABC",
       },
 
       keyframes: {
@@ -44,8 +42,6 @@ module.exports = {
       backgroundSize: {
         200: "200% 200%",
       },
-
-
     },
   },
   plugins: [],

@@ -1,0 +1,26 @@
+{% extends 'base.html' %} {% block content %}
+
+<!-- Back to Top Button -->
+<a href="#top" class="fixed bottom-6 right-6 flex flex-col items-center group z-50">
+  <!-- Button Circle -->
+  <div
+    class="w-12 h-12 flex items-center justify-center rounded-full bg-white shadow-[0_6px_14px_rgba(0,0,0,0.35)] transition group-hover:shadow-[0_8px_18px_rgba(0,0,0,0.45)]"
+  >
+    <!-- Black Arrow -->
+    <svg class="w-6 h-6 text-black" fill="currentColor" viewBox="0 0 20 20">
+      <path d="M10 4l-6 6h4v6h4v-6h4l-6-6z" />
+    </svg>
+  </div>
+
+  <!-- Curved Text -->
+  <svg viewBox="0 0 200 60" class=" w-32 h-10">
+    <path id="curve" d="M10,50 Q100,0 190,50" fill="transparent" />
+    <text font-size="12" fill="white" font-weight="bold">
+      <textPath href="#curve" startOffset="50%" text-anchor="middle">
+        Back to Top
+      </textPath>
+    </text>
+  </svg>
+</a>
+
+{% endblock %}
